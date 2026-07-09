@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cartoon Character Generator – The Dramatic Plate</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lobster&family=Inter:opsz@14..32&display=swap" rel="stylesheet" />
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+    <!-- ========== NAV ========== -->
+    <nav class="navbar">
+        <a href="#" class="logo">🎭 The <span>Dramatic</span> Plate</a>
+    </nav>
+
+    <!-- ========== MAIN GENERATOR ========== -->
+    <main class="generator-wrapper">
+        <div class="generator-container">
+
+            <!-- LEFT: CONTROLS -->
+            <section class="controls">
+                <h2>🎭 Create Your Character</h2>
+                <p>Pick a category &amp; item, or click <strong>Random Drama</strong> for a surprise!</p>
+
+                <form id="generatorForm">
+                    <div class="form-group">
+                        <label for="categorySelect">Category</label>
+                        <select id="categorySelect" required>
+                            <option value="">— Select —</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="itemSelect">Item</label>
+                        <select id="itemSelect" required>
+                            <option value="">— Choose a category first —</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="generate-btn" id="generateBtn">✨ Generate Character</button>
+
+                    <div class="divider">or</div>
+
+                    <button type="button" class="generate-btn random-btn" id="randomBtn">🎲 Random Drama</button>
+                </form>
+
+                <p style="margin-top: 1rem; font-size: 0.85rem; color: #666;">
+                    ⚡ Cartoon characters with voice &amp; animation
+                </p>
+            </section>
+
+            <!-- RIGHT: RESULT -->
+            <section class="result-area" id="resultArea">
+                <div id="resultContent">
+                    <div class="placeholder-text">
+                        <span class="big-emoji">🎭</span>
+                        Pick a category &amp; item above<br />
+                        <span style="font-size: 0.9rem; opacity: 0.7;">Your cartoon character will appear here!</span>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- ========== FOOTER ========== -->
+    <footer>
+        <div class="socials">
+            <a href="#">📸 Instagram</a>
+            <a href="#">📌 Pinterest</a>
+            <a href="#">🐦 X</a>
+            <a href="#">📘 Facebook</a>
+        </div>
+        <p style="font-family: 'Lobster', cursive; color: var(--neon-yellow); font-size: 1.2rem;">
+            “Where veggies throw shade, and pets judge your cooking.”
+        </p>
+        <small>&copy; 2026 The Dramatic Plate. Made with chaos in Ireland 🇮🇪</small>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
