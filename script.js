@@ -9,7 +9,7 @@ const dogApiUrl = 'https://dog.ceo/api/breeds/image/random';
 // 2. EXPANDED Category & Item Definitions
 // ============================================================
 const categoryMap = {
-    // ----- ANIMALS (EXPANDED) -----
+    // ----- ANIMALS -----
     animals: {
         label: '🐾 Animals',
         colors: ['#FF6B6B', '#FFD93D', '#6BCB77', '#4D96FF', '#FF9FF3', '#FF9F43'],
@@ -44,7 +44,7 @@ const categoryMap = {
         }
     },
     
-    // ----- FRUITS (EXPANDED) -----
+    // ----- FRUITS -----
     fruits: {
         label: '🍎 Fruits',
         colors: ['#FF6B6B', '#FFD93D', '#6BCB77', '#FF9F43', '#FF9FF3', '#4D96FF'],
@@ -65,7 +65,7 @@ const categoryMap = {
         }
     },
     
-    // ----- FOOD (EXPANDED) -----
+    // ----- FOOD -----
     food: {
         label: '🍕 Food',
         colors: ['#FF6B6B', '#FFD93D', '#6BCB77', '#D4A574', '#FF9F43', '#FF9FF3'],
@@ -86,7 +86,7 @@ const categoryMap = {
         }
     },
     
-    // ----- NEW: VEGETABLES -----
+    // ----- VEGETABLES -----
     vegetables: {
         label: '🥬 Vegetables',
         colors: ['#6BCB77', '#FF6B6B', '#FFD93D', '#4D96FF', '#FF9F43', '#FF9FF3'],
@@ -107,7 +107,7 @@ const categoryMap = {
         }
     },
     
-    // ----- NEW: DRINKS -----
+    // ----- DRINKS -----
     drinks: {
         label: '☕ Drinks',
         colors: ['#4D96FF', '#FFD93D', '#FF6B6B', '#FF9FF3', '#6BCB77', '#D4A574'],
@@ -126,7 +126,7 @@ const categoryMap = {
         }
     },
     
-    // ----- NEW: DESSERTS -----
+    // ----- DESSERTS -----
     desserts: {
         label: '🍰 Desserts',
         colors: ['#FF9FF3', '#FFD93D', '#FF6B6B', '#6BCB77', '#FF9F43', '#4D96FF'],
@@ -144,7 +144,7 @@ const categoryMap = {
         }
     },
     
-    // ----- NEW: BIRDS -----
+    // ----- BIRDS -----
     birds: {
         label: '🐦 Birds',
         colors: ['#4D96FF', '#FFD93D', '#FF6B6B', '#6BCB77', '#FF9F43', '#FF9FF3'],
@@ -164,7 +164,7 @@ const categoryMap = {
         }
     },
     
-    // ----- NEW: SEA CREATURES -----
+    // ----- SEA CREATURES -----
     sea: {
         label: '🐠 Sea Creatures',
         colors: ['#4D96FF', '#6BCB77', '#FFD93D', '#FF6B6B', '#FF9F43', '#FF9FF3'],
@@ -400,7 +400,7 @@ function getRandomItem() {
 }
 
 // ============================================================
-// 8. Generate Character (main function)
+// 8. Generate Character (main function) - COMPLETELY FIXED
 // ============================================================
 async function generateDrama(categoryKey, itemKey) {
     if (!categoryKey || !itemKey) {
@@ -448,7 +448,7 @@ async function generateDrama(categoryKey, itemKey) {
 
         const adjectives = [
             'Grumpy', 'Dramatic', 'Judgmental', 'Overdramatic', 'Sassy', 
-            'Furious', 'Moody', 'Chaotic', 'Silly', 'Wacky', 'Dramatic',
+            'Furious', 'Moody', 'Chaotic', 'Silly', 'Wacky',
             'Sarcastic', 'Mysterious', 'Glamorous', 'Snarky', 'Quirky'
         ];
         const adjective = adjectives[Math.floor(Math.random() * adjectives.length)];
@@ -458,45 +458,48 @@ async function generateDrama(categoryKey, itemKey) {
         lastQuoteText = quoteText;
         lastJokeText = jokeText;
 
-        // Build the cartoon character result
+        // FIX: Properly escape for HTML attributes using a helper function
+        function escapeHtmlAttr(str) {
+            return str.replace(/&/g, '&amp;')
+                      .replace(/"/g, '&quot;')
+                      .replace(/'/g, '&#39;');
+        }
+
+        const safeName = escapeHtmlAttr(characterName);
+        const safeQuote = escapeHtmlAttr(quoteText);
+        const safeJoke = escapeHtmlAttr(jokeText);
+
+        // FIX: Use a different approach for onclick - use data attributes instead
+        // This avoids the quote escaping issue entirely
         resultContent.innerHTML = `
             <div id="resultContent">
-                <!-- Speech Bubble -->
                 <div class="speech-bubble" id="speechBubble">
                     💬 ${quoteText}
                 </div>
 
-                <!-- Cartoon Character -->
                 <div class="cartoon-character-container">
                     <div class="cartoon-character" id="cartoonCharacter">
-                        <!-- Sound Waves -->
                         <div class="sound-waves">
                             <div class="sound-wave"></div>
                             <div class="sound-wave"></div>
                             <div class="sound-wave"></div>
                         </div>
 
-                        <!-- Character Body -->
                         <div class="character-body" style="background: ${itemColor};">
-                            <!-- Eyebrows -->
                             <div class="character-eyebrows" id="characterEyebrows">
                                 <div class="character-eyebrow"></div>
                                 <div class="character-eyebrow"></div>
                             </div>
 
-                            <!-- Eyes -->
                             <div class="character-eyes" id="characterEyes">
                                 <div class="character-eye"></div>
                                 <div class="character-eye"></div>
                             </div>
 
-                            <!-- Mouth -->
                             <div class="character-mouth" id="characterMouth"></div>
 
-                            <!-- Emoji/Icon -->
                             <span class="character-icon">${itemEmoji}</span>
 
-                            <!-- Name Tag -->
                             <span class="character-name-tag">${characterName}</span>
                         </div>
                     </div>
@@ -506,7 +509,6 @@ async function generateDrama(categoryKey, itemKey) {
                 <div class="result-joke">💬 <em>also said:</em> ${jokeText}</div>
                 <span class="result-category-tag">${category.label} • ${itemLabel}</span>
 
-                <!-- VOICEOVER CONTROLS -->
                 <div class="voice-controls">
                     <button class="voice-btn" id="playVoiceBtn" onclick="replayVoice()">
                         🔊 Play Voice
@@ -516,15 +518,55 @@ async function generateDrama(categoryKey, itemKey) {
                     </button>
                 </div>
 
-                <!-- SHARE BUTTONS -->
+                <!-- SHARE BUTTONS - FIXED: Using encoded data attributes -->
                 <div class="share-buttons">
-                    <button onclick="shareTwitter('${characterName}', '${quoteText.replace(/"/g, '&quot;')}', '${jokeText.replace(/"/g, '&quot;')}')">🐦 Tweet</button>
-                    <button onclick="shareFacebook('${characterName}', '${quoteText.replace(/"/g, '&quot;')}', '${jokeText.replace(/"/g, '&quot;')}')">📘 Share</button>
+                    <button data-share="twitter" data-name="${safeName}" data-quote="${safeQuote}" data-joke="${safeJoke}">
+                        🐦 Twitter
+                    </button>
+                    <button data-share="facebook" data-name="${safeName}" data-quote="${safeQuote}" data-joke="${safeJoke}">
+                        📘 Facebook
+                    </button>
+                    <button data-share="pinterest" data-name="${safeName}" data-quote="${safeQuote}" data-joke="${safeJoke}">
+                        📌 Pinterest
+                    </button>
+                    <button data-share="whatsapp" data-name="${safeName}" data-quote="${safeQuote}" data-joke="${safeJoke}">
+                        💬 WhatsApp
+                    </button>
+                    <button data-share="reddit" data-name="${safeName}" data-quote="${safeQuote}" data-joke="${safeJoke}">
+                        🤖 Reddit
+                    </button>
+                    <button data-share="linkedin" data-name="${safeName}" data-quote="${safeQuote}" data-joke="${safeJoke}">
+                        💼 LinkedIn
+                    </button>
+                    <button data-share="copy" data-name="${safeName}" data-quote="${safeQuote}" data-joke="${safeJoke}">
+                        📋 Copy
+                    </button>
                 </div>
             </div>
         `;
 
-        // Auto-speak with animation
+        // FIX: Attach event listeners to the share buttons
+        document.querySelectorAll('.share-buttons button[data-share]').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const type = this.dataset.share;
+                const name = this.dataset.name;
+                const quote = this.dataset.quote;
+                const joke = this.dataset.joke;
+                
+                // Call the appropriate share function
+                switch(type) {
+                    case 'twitter': shareTwitter(name, quote, joke); break;
+                    case 'facebook': shareFacebook(name, quote, joke); break;
+                    case 'pinterest': sharePinterest(name, quote, joke); break;
+                    case 'whatsapp': shareWhatsApp(name, quote, joke); break;
+                    case 'reddit': shareReddit(name, quote, joke); break;
+                    case 'linkedin': shareLinkedIn(name, quote, joke); break;
+                    case 'copy': copyToClipboard(name, quote, joke); break;
+                }
+            });
+        });
+
         setTimeout(() => {
             speakCharacter(characterName, quoteText, jokeText);
         }, 400);
@@ -563,20 +605,116 @@ function generateRandomDrama() {
 }
 
 // ============================================================
-// 10. Share Functions
+// 10. Social Share Functions - CLEAN AND WORKING
 // ============================================================
 function shareTwitter(name, quote, joke) {
-    let cleanJoke = joke;
-    if (cleanJoke.startsWith('"') && cleanJoke.endsWith('"')) cleanJoke = cleanJoke.slice(1, -1);
-    const text = `🎭 Just met ${name}! ${quote} Also said: ${cleanJoke} 🎭 Get your own cartoon character at The Dramatic Plate!`;
-    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent('https://thedramaticplate.ie')}`, '_blank');
+    let cleanJoke = joke.replace(/^"|"$/g, '').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+    let cleanQuote = quote.replace(/^"|"$/g, '').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+    let cleanName = name.replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+    
+    const shareText = `🎭 Just met ${cleanName}! ${cleanQuote} Also said: ${cleanJoke} 🎭 Get your own cartoon character at The Dramatic Plate!`;
+    const url = 'https://thedramaticplate.ie';
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(url)}`, '_blank', 'width=600,height=400');
 }
 
 function shareFacebook(name, quote, joke) {
-    let cleanJoke = joke;
-    if (cleanJoke.startsWith('"') && cleanJoke.endsWith('"')) cleanJoke = cleanJoke.slice(1, -1);
-    const text = `🎭 Just met ${name}! ${quote} Also said: ${cleanJoke} 🎭 Get your own cartoon character at The Dramatic Plate!`;
-    window.open(`https://www.facebook.com/sharer/sharer.php?u=https://thedramaticplate.ie&quote=${encodeURIComponent(text)}`, '_blank');
+    let cleanJoke = joke.replace(/^"|"$/g, '').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+    let cleanQuote = quote.replace(/^"|"$/g, '').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+    let cleanName = name.replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+    
+    const shareText = `🎭 Just met ${cleanName}! ${cleanQuote} Also said: ${cleanJoke} 🎭 Get your own cartoon character at The Dramatic Plate!`;
+    const url = 'https://thedramaticplate.ie';
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(shareText)}`, '_blank', 'width=600,height=400');
+}
+
+function sharePinterest(name, quote, joke) {
+    let cleanJoke = joke.replace(/^"|"$/g, '').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+    let cleanQuote = quote.replace(/^"|"$/g, '').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+    let cleanName = name.replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+    
+    const description = `${cleanName} – ${cleanQuote} Also said: ${cleanJoke}`;
+    const url = 'https://thedramaticplate.ie';
+    const imageUrl = 'https://via.placeholder.com/800x600/FFDE21/1a1a1a?text=Dramatic+Plate';
+    window.open(`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(url)}&media=${encodeURIComponent(imageUrl)}&description=${encodeURIComponent(description)}`, '_blank', 'width=600,height=400');
+}
+
+function shareWhatsApp(name, quote, joke) {
+    let cleanJoke = joke.replace(/^"|"$/g, '').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+    let cleanQuote = quote.replace(/^"|"$/g, '').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+    let cleanName = name.replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+    
+    const shareText = `🎭 Just met ${cleanName}! ${cleanQuote} Also said: ${cleanJoke} 🎭 Get your own cartoon character at The Dramatic Plate! https://thedramaticplate.ie`;
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`, '_blank', 'width=600,height=400');
+}
+
+function shareReddit(name, quote, joke) {
+    let cleanJoke = joke.replace(/^"|"$/g, '').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+    let cleanQuote = quote.replace(/^"|"$/g, '').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+    let cleanName = name.replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+    
+    const title = `🎭 Just met ${cleanName}!`;
+    const shareText = `${cleanQuote} Also said: ${cleanJoke}`;
+    const url = 'https://thedramaticplate.ie';
+    window.open(`https://www.reddit.com/submit?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title + ' ' + shareText)}`, '_blank', 'width=600,height=400');
+}
+
+function shareLinkedIn(name, quote, joke) {
+    let cleanJoke = joke.replace(/^"|"$/g, '').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+    let cleanQuote = quote.replace(/^"|"$/g, '').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+    let cleanName = name.replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+    
+    const shareText = `🎭 Just met ${cleanName}! ${cleanQuote} Also said: ${cleanJoke}`;
+    const url = 'https://thedramaticplate.ie';
+    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}&summary=${encodeURIComponent(shareText)}`, '_blank', 'width=600,height=400');
+}
+
+function copyToClipboard(name, quote, joke) {
+    let cleanJoke = joke.replace(/^"|"$/g, '').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+    let cleanQuote = quote.replace(/^"|"$/g, '').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+    let cleanName = name.replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+    
+    const text = `🎭 Just met ${cleanName}! ${cleanQuote} Also said: ${cleanJoke} 🎭 Get your own cartoon character at The Dramatic Plate! https://thedramaticplate.ie`;
+    
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+            const btn = document.activeElement;
+            if (btn) {
+                const original = btn.textContent;
+                btn.textContent = '✅ Copied!';
+                btn.style.background = '#6BCB77';
+                btn.style.color = 'white';
+                setTimeout(() => {
+                    btn.textContent = original;
+                    btn.style.background = '';
+                    btn.style.color = '';
+                }, 2000);
+            }
+        }).catch(() => {
+            navigator.clipboard.writeText(text);
+        });
+    } else {
+        // Fallback
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        
+        // Show feedback
+        const btn = document.activeElement;
+        if (btn) {
+            const original = btn.textContent;
+            btn.textContent = '✅ Copied!';
+            btn.style.background = '#6BCB77';
+            btn.style.color = 'white';
+            setTimeout(() => {
+                btn.textContent = original;
+                btn.style.background = '';
+                btn.style.color = '';
+            }, 2000);
+        }
+    }
 }
 
 // ============================================================
@@ -605,7 +743,20 @@ if (window.speechSynthesis) {
 }
 
 // ============================================================
-// 13. Welcome message
+// 13. Make functions globally accessible
+// ============================================================
+window.shareTwitter = shareTwitter;
+window.shareFacebook = shareFacebook;
+window.sharePinterest = sharePinterest;
+window.shareWhatsApp = shareWhatsApp;
+window.shareReddit = shareReddit;
+window.shareLinkedIn = shareLinkedIn;
+window.copyToClipboard = copyToClipboard;
+window.replayVoice = replayVoice;
+window.stopVoice = stopVoice;
+
+// ============================================================
+// 14. Welcome message
 // ============================================================
 window.addEventListener('load', function() {
     const placeholder = document.querySelector('.placeholder-text');
@@ -623,9 +774,3 @@ window.addEventListener('load', function() {
         `;
     }
 });
-
-// Make share functions globally accessible
-window.shareTwitter = shareTwitter;
-window.shareFacebook = shareFacebook;
-window.replayVoice = replayVoice;
-window.stopVoice = stopVoice;

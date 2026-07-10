@@ -587,10 +587,11 @@ h1, h2, h3 {
 }
 
 /* ---------- SHARE BUTTONS ---------- */
+/* ---------- SHARE BUTTONS - UPDATED ---------- */
 .share-buttons {
     display: flex;
-    gap: 0.8rem;
-    margin-top: 0.5rem;
+    gap: 0.6rem;
+    margin-top: 0.8rem;
     flex-wrap: wrap;
     justify-content: center;
 }
@@ -599,22 +600,77 @@ h1, h2, h3 {
     background: var(--dark-charcoal);
     color: white;
     border: none;
-    padding: 0.5rem 1.2rem;
+    padding: 0.5rem 1rem;
     border-radius: 60px;
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     cursor: pointer;
-    transition: 0.3s;
+    transition: all 0.3s;
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
     border: 2px solid transparent;
+    font-family: 'Inter', sans-serif;
 }
 
 .share-buttons button:hover {
-    background: var(--neon-yellow);
-    color: var(--dark-charcoal);
-    border-color: var(--dark-charcoal);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* Individual button hover colors */
+.share-buttons button:nth-child(1):hover {
+    background: #1DA1F2;
+    border-color: #1DA1F2;
+    color: white;
+}
+
+.share-buttons button:nth-child(2):hover {
+    background: #1877F2;
+    border-color: #1877F2;
+    color: white;
+}
+
+.share-buttons button:nth-child(3):hover {
+    background: #E60023;
+    border-color: #E60023;
+    color: white;
+}
+
+.share-buttons button:nth-child(4):hover {
+    background: #25D366;
+    border-color: #25D366;
+    color: white;
+}
+
+.share-buttons button:nth-child(5):hover {
+    background: #FF4500;
+    border-color: #FF4500;
+    color: white;
+}
+
+.share-buttons button:nth-child(6):hover {
+    background: #0A66C2;
+    border-color: #0A66C2;
+    color: white;
+}
+
+.share-buttons button:nth-child(7):hover {
+    background: #6BCB77;
+    border-color: #6BCB77;
+    color: white;
+}
+
+.share-buttons button:active {
+    transform: scale(0.95);
+}
+
+/* Responsive share buttons */
+@media (max-width: 768px) {
+    .share-buttons button {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.75rem;
+    }
 }
 
 /* ---------- FOOTER ---------- */
