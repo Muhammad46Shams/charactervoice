@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://charactervoice.netlify.app/sitemap.xml
