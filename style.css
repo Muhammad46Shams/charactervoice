@@ -1098,3 +1098,160 @@ footer small {
         font-size: 1.8rem;
     }
 }
+
+
+/* ============================================================
+   AD SPACE STYLES - VERTICAL ADS ON BOTH SIDES
+   ============================================================ */
+
+/* Main wrapper with flex layout for ads */
+.main-wrapper {
+    display: flex;
+    flex: 1;
+    position: relative;
+    background: linear-gradient(135deg, var(--electric-teal), var(--neon-yellow));
+}
+
+/* Shared ad space styles */
+.ad-space {
+    flex: 0 0 160px;
+    min-width: 160px;
+    padding: 1.5rem 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(2px);
+    position: sticky;
+    top: 80px;
+    align-self: flex-start;
+    min-height: 600px;
+}
+
+/* Left ad specific */
+.ad-left {
+    border-right: 2px dashed rgba(255, 255, 255, 0.3);
+}
+
+/* Right ad specific */
+.ad-right {
+    border-left: 2px dashed rgba(255, 255, 255, 0.3);
+}
+
+/* Ad container */
+.ad-container {
+    width: 100%;
+    max-width: 160px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.ad-label {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgba(26, 26, 26, 0.4);
+    font-weight: 700;
+}
+
+.ad-content {
+    width: 100%;
+    min-height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 16px;
+    border: 2px dashed rgba(26, 26, 26, 0.2);
+    padding: 0.5rem;
+}
+
+.ad-placeholder {
+    text-align: center;
+    color: rgba(26, 26, 26, 0.5);
+    font-size: 0.75rem;
+}
+.ad-placeholder span {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 0.3rem;
+}
+.ad-placeholder p {
+    font-weight: 600;
+    margin: 0.2rem 0;
+}
+.ad-placeholder small {
+    font-size: 0.6rem;
+    opacity: 0.7;
+}
+
+/* Make generator-wrapper take remaining space */
+.generator-wrapper {
+    flex: 1;
+    padding: 3rem 5%;
+    border-bottom: 8px solid var(--hot-magenta);
+    background: transparent;
+}
+
+/* Ensure the generator container still works */
+.generator-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3rem;
+    align-items: flex-start;
+}
+
+/* ============================================================
+   RESPONSIVE AD SPACES
+   ============================================================ */
+
+/* Tablet: Hide ads on smaller screens */
+@media (max-width: 1024px) {
+    .ad-space {
+        flex: 0 0 120px;
+        min-width: 120px;
+        padding: 1rem 0.3rem;
+        min-height: 400px;
+    }
+    .ad-content {
+        min-height: 300px;
+    }
+    .ad-placeholder span {
+        font-size: 2rem;
+    }
+}
+
+/* Mobile: Completely hide ads */
+@media (max-width: 768px) {
+    .ad-space {
+        display: none !important;
+    }
+    
+    .main-wrapper {
+        flex-direction: column;
+    }
+    
+    .generator-wrapper {
+        padding: 2rem 4%;
+        border-bottom: 8px solid var(--hot-magenta);
+    }
+    
+    .ad-space.ad-left,
+    .ad-space.ad-right {
+        display: none;
+    }
+}
+
+/* ============================================================
+   FIX: Ensure generator-wrapper has proper background on mobile
+   ============================================================ */
+@media (max-width: 768px) {
+    .generator-wrapper {
+        background: linear-gradient(135deg, var(--electric-teal), var(--neon-yellow));
+        padding: 2rem 4%;
+    }
+}
