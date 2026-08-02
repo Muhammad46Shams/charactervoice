@@ -7,14 +7,14 @@
     <title>Cartoon Character Generator – The Dramatic Plate</title>
 
     <meta name="description"
-          content="Generate fun character voice-overs by selecting a category and character.">
+          content="Generate fun character voice-overs by selecting a category and character." />
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lobster&family=Inter:opsz@14..32&display=swap" rel="stylesheet" />
     
-    <!--Google Adsense Link-->
+    <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8599952668216208" crossorigin="anonymous"></script>
 
     <!-- CSS -->
@@ -38,54 +38,12 @@
         </div>
     </nav>
 
-    <!-- ========== MAIN CONTENT WITH ADS ========== -->
-    <div class="main-wrapper">
-        <!-- LEFT AD SPACE -->
-        <aside class="ad-space ad-left">
-            <div class="ad-container">
-                <span class="ad-label">— Sponsored —</span>
-                <!-- AdSense or affiliate ad goes here -->
-                <div class="ad-content">
-                    <div class="ad-placeholder">
-                        <ins class="adsbygoogle"
-                            style="display:block"
-                            data-ad-client="ca-pub-8599952668216208"
-                            data-ad-slot="3918843481"
-                            data-ad-format="auto"
-                            data-full-width-responsive="true"></ins>
-                        <script>
-                            (adsbygoogle = window.adsbygoogle || []).push({});
-                        </script>
-                    </div>
-                    <!-- Replace the placeholder with your actual ad code -->
-                </div>
-            </div>
-        </aside>
+    <!-- ========== MAIN GENERATOR ========== -->
+    <main class="generator-wrapper">
+        <div class="generator-container">
 
-
-        <!-- ========== MAIN GENERATOR ========== -->
-        <main class="generator-wrapper">
-            <div class="generator-container">
-
-                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8599952668216208" crossorigin="anonymous"></script>
-                
-
-                <div class="ad-square-content">
-                    <!-- Google AdSense Square Ad -->
-                    <!-- square ad -->
-                        <ins class="adsbygoogle"
-                            style="display:block"
-                            data-ad-client="ca-pub-8599952668216208"
-                            data-ad-slot="9933019272"
-                            data-ad-format="auto"
-                            data-full-width-responsive="true"></ins>
-                        <script>
-                            (adsbygoogle = window.adsbygoogle || []).push({});
-                        </script>
-                </div>
-
-
-                <!-- LEFT: CONTROLS -->
+            <!-- LEFT COLUMN: Controls + Square Ad -->
+            <div class="left-column">
                 <section class="controls">
                     <h2>🎭 Create Your Character</h2>
                     <p>Pick a category &amp; item, or click <strong>Random Drama</strong> for a surprise!</p>
@@ -117,22 +75,23 @@
                     </p>
                 </section>
 
-                <div class="ad-rectangle-content">
-                    <!-- Google AdSense Rectangle Ad -->
-                        <!-- horizontal ad -->
+                <!-- SQUARE AD - Under the controls -->
+                <div class="ad-square">
+                    <span class="ad-label">— Sponsored —</span>
+                    <div class="ad-square-content" id="adSquareContent">
                         <ins class="adsbygoogle"
-                            style="display:block"
-                            data-ad-client="ca-pub-8599952668216208"
-                            data-ad-slot="3367610923"
-                            data-ad-format="auto"
-                            data-full-width-responsive="true"></ins>
-                        <script>
-                            (adsbygoogle = window.adsbygoogle || []).push({});
-                        </script>
-
+                             style="display:block"
+                             data-ad-client="ca-pub-8599952668216208"
+                             data-ad-slot="9933019272"
+                             data-ad-format="auto"
+                             data-full-width-responsive="true"
+                             id="squareAdIns"></ins>
+                    </div>
                 </div>
+            </div>
 
-                <!-- RIGHT: RESULT -->
+            <!-- RIGHT COLUMN: Result Area (No Ad) -->
+            <div class="right-column">
                 <section class="result-area" id="resultArea">
                     <div id="resultContent">
                         <div class="placeholder-text">
@@ -142,32 +101,10 @@
                         </div>
                     </div>
                 </section>
-
             </div>
-        </main>
 
-        <!-- RIGHT AD SPACE -->
-        <aside class="ad-space ad-right">
-            <div class="ad-container">
-                <span class="ad-label">— Sponsored —</span>
-                <!-- AdSense or affiliate ad goes here -->
-                <div class="ad-content">
-                    <div class="ad-placeholder">
-                        <ins class="adsbygoogle"
-                            style="display:block"
-                            data-ad-client="ca-pub-8599952668216208"
-                            data-ad-slot="3918843481"
-                            data-ad-format="auto"
-                            data-full-width-responsive="true"></ins>
-                        <script>
-                            (adsbygoogle = window.adsbygoogle || []).push({});
-                        </script>
-                    </div>
-                    <!-- Replace the placeholder with your actual ad code -->
-                </div>
-            </div>
-        </aside>
-    </div>
+        </div>
+    </main>
 
     <!-- ========== FOOTER ========== -->
     <footer>
@@ -193,8 +130,192 @@
 
     <!-- JavaScript -->
     <script src="script.js"></script>
+    
+    <!-- ============================================================
+         SAFE AD LOADER - SQUARE AD ONLY
+         ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
+            
+            // ============================================================
+            // 1. Your AdSense Configuration - SQUARE AD ONLY
+            // ============================================================
+            const AD_CONFIG = {
+                square: {
+                    client: 'ca-pub-8599952668216208',
+                    slot: '9933019272',
+                    containerId: 'adSquareContent',
+                    insId: 'squareAdIns'
+                }
+            };
+            
+            // ============================================================
+            // 2. Track loaded state
+            // ============================================================
+            let squareAdLoaded = false;
+            let loadAttempts = 0;
+            const MAX_ATTEMPTS = 5;
+            
+            // ============================================================
+            // 3. Check if ad already has content
+            // ============================================================
+            function adAlreadyHasContent(insElement) {
+                if (!insElement) return true;
+                if (insElement.dataset.loaded === 'true') return true;
+                if (insElement.children.length > 0) return true;
+                if (insElement.querySelector('iframe')) return true;
+                
+                const html = insElement.innerHTML.trim();
+                if (html && html.length > 50) return true;
+                
+                return false;
+            }
+            
+            // ============================================================
+            // 4. Check if container has visible width
+            // ============================================================
+            function hasVisibleWidth(element) {
+                if (!element) return false;
+                const rect = element.getBoundingClientRect();
+                return rect.width > 10 && rect.width !== undefined;
+            }
+            
+            // ============================================================
+            // 5. Load square ad
+            // ============================================================
+            function loadSquareAd() {
+                const container = document.getElementById(AD_CONFIG.square.containerId);
+                const insElement = document.getElementById(AD_CONFIG.square.insId);
+                
+                if (!container || !insElement) {
+                    console.warn('Square ad container or ins not found');
+                    return false;
+                }
+                
+                // Check if ad already has content
+                if (adAlreadyHasContent(insElement)) {
+                    console.log('Square ad already has content, skipping');
+                    insElement.dataset.loaded = 'true';
+                    squareAdLoaded = true;
+                    return true;
+                }
+                
+                // Check if container has width
+                if (!hasVisibleWidth(container)) {
+                    console.log('Square ad container has no width yet');
+                    return false;
+                }
+                
+                // Set attributes
+                insElement.setAttribute('data-ad-client', AD_CONFIG.square.client);
+                insElement.setAttribute('data-ad-slot', AD_CONFIG.square.slot);
+                insElement.setAttribute('data-ad-format', 'auto');
+                insElement.setAttribute('data-full-width-responsive', 'true');
+                
+                insElement.dataset.loading = 'true';
+                
+                try {
+                    if (typeof adsbygoogle === 'undefined') {
+                        console.warn('AdSense not loaded yet');
+                        insElement.dataset.loading = 'false';
+                        return false;
+                    }
+                    
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    
+                    insElement.dataset.loaded = 'true';
+                    insElement.dataset.loading = 'false';
+                    squareAdLoaded = true;
+                    console.log('Square ad loaded successfully');
+                    return true;
+                    
+                } catch (e) {
+                    insElement.dataset.loading = 'false';
+                    
+                    if (e.message && e.message.includes('already have ads')) {
+                        console.log('Square ad already has ads, marking as loaded');
+                        insElement.dataset.loaded = 'true';
+                        squareAdLoaded = true;
+                        return true;
+                    }
+                    
+                    if (e.message && e.message.includes('No slot size')) {
+                        console.warn('Square ad: No slot size, will retry');
+                        return false;
+                    }
+                    
+                    console.error('Square ad error:', e.message);
+                    return false;
+                }
+            }
+            
+            // ============================================================
+            // 6. Load all ads (only square ad)
+            // ============================================================
+            function loadAllAds() {
+                loadAttempts++;
+                
+                if (loadAttempts > MAX_ATTEMPTS) {
+                    console.log('Max attempts reached for square ad');
+                    return;
+                }
+                
+                console.log('Loading square ad, attempt', loadAttempts);
+                
+                if (!squareAdLoaded) {
+                    squareAdLoaded = loadSquareAd();
+                }
+                
+                if (!squareAdLoaded && loadAttempts < MAX_ATTEMPTS) {
+                    setTimeout(loadAllAds, 800);
+                } else if (squareAdLoaded) {
+                    console.log('Square ad loaded successfully');
+                }
+            }
+            
+            // ============================================================
+            // 7. Event Listeners
+            // ============================================================
+            
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function() {
+                    setTimeout(loadAllAds, 500);
+                });
+            } else {
+                setTimeout(loadAllAds, 500);
+            }
+            
+            window.addEventListener('load', function() {
+                if (!squareAdLoaded) {
+                    setTimeout(loadAllAds, 300);
+                }
+            });
+            
+            // ============================================================
+            // 8. Debug
+            // ============================================================
+            window.debugAds = function() {
+                console.log('=== Ad Debug ===');
+                
+                const squareIns = document.getElementById('squareAdIns');
+                const squareContainer = document.getElementById('adSquareContent');
+                
+                console.log('Square Ad:', {
+                    exists: !!squareIns,
+                    loaded: squareIns ? squareIns.dataset.loaded : 'N/A',
+                    children: squareIns ? squareIns.children.length : 0,
+                    hasIframe: squareIns ? !!squareIns.querySelector('iframe') : false,
+                    width: squareContainer ? squareContainer.getBoundingClientRect().width : 0
+                });
+                
+                console.log('AdSense loaded:', typeof adsbygoogle !== 'undefined');
+                console.log('========================');
+            };
+            
+            console.log('Ad loader ready (square ad only). Run debugAds() to debug.');
+            
+        })();
+    </script>
 </body>
 </html>
-
-
-
