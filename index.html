@@ -6,15 +6,14 @@
     <meta name="google-site-verification" content="OiZur_QMM8cGPePx55tz1Snll0gOYcd893OjhDf5V5E" />
     <title>Cartoon Character Generator – The Dramatic Plate</title>
 
-    <meta name="description"
-          content="Generate fun character voice-overs by selecting a category and character." />
+    <meta name="description" content="Generate fun cartoon character voice-overs with our AI-powered character generator. Choose from 85+ characters across 8+ categories. Family-friendly fun!" />
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lobster&family=Inter:opsz@14..32&display=swap" rel="stylesheet" />
     
-    <!-- Google AdSense -->
+    <!-- Google AdSense - LOAD AFTER CONTENT -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8599952668216208" crossorigin="anonymous"></script>
 
     <!-- CSS -->
@@ -31,12 +30,51 @@
                 <li><a href="about.html">About</a></li>
                 <li><a href="contact.html">Contact</a></li>
                 <li><a href="privacy.html">Privacy</a></li>
+                <li><a href="blog.html">Blog</a></li>
             </ul>
             <button class="nav-toggle" aria-label="Toggle navigation">
                 <span></span><span></span><span></span>
             </button>
         </div>
     </nav>
+
+    <!-- ========== HERO SECTION - SUBSTANTIAL CONTENT ========== -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1>🎭 The Dramatic Plate</h1>
+            <p class="hero-subtitle">Where your favourite foods, fruits, and animals come to life with personality!</p>
+            <div class="hero-features">
+                <div class="hero-feature">
+                    <span>🎨</span>
+                    <div>
+                        <h3>85+ Characters</h3>
+                        <p>From sassy strawberries to grumpy potatoes</p>
+                    </div>
+                </div>
+                <div class="hero-feature">
+                    <span>🗣️</span>
+                    <div>
+                        <h3>Voice Generation</h3>
+                        <p>Hear your characters speak in multiple languages</p>
+                    </div>
+                </div>
+                <div class="hero-feature">
+                    <span>🎲</span>
+                    <div>
+                        <h3>Random Drama</h3>
+                        <p>Get surprised with a random character every time</p>
+                    </div>
+                </div>
+                <div class="hero-feature">
+                    <span>🌍</span>
+                    <div>
+                        <h3>15+ Languages</h3>
+                        <p>Choose from multiple languages and voices</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- ========== MAIN GENERATOR ========== -->
     <main class="generator-wrapper">
@@ -63,6 +101,49 @@
                             </select>
                         </div>
 
+                        <!-- Voice Settings -->
+                        <div class="voice-settings">
+                            <div class="form-group">
+                                <label for="languageSelect">🌐 Language</label>
+                                <select id="languageSelect">
+                                    <option value="en-US">English (US)</option>
+                                    <option value="en-GB">English (UK)</option>
+                                    <option value="en-IE" selected>English (Ireland)</option>
+                                    <option value="es-ES">Spanish</option>
+                                    <option value="fr-FR">French</option>
+                                    <option value="de-DE">German</option>
+                                    <option value="it-IT">Italian</option>
+                                    <option value="pt-PT">Portuguese</option>
+                                    <option value="nl-NL">Dutch</option>
+                                    <option value="pl-PL">Polish</option>
+                                    <option value="ru-RU">Russian</option>
+                                    <option value="ja-JP">Japanese</option>
+                                    <option value="ko-KR">Korean</option>
+                                    <option value="zh-CN">Chinese (Mandarin)</option>
+                                    <option value="hi-IN">Hindi</option>
+                                    <option value="ar-SA">Arabic</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group voice-gender-group">
+                                <label>🎤 Voice Gender</label>
+                                <div class="gender-options">
+                                    <label class="gender-option">
+                                        <input type="radio" name="voiceGender" value="male" checked />
+                                        <span>👨 Male</span>
+                                    </label>
+                                    <label class="gender-option">
+                                        <input type="radio" name="voiceGender" value="female" />
+                                        <span>👩 Female</span>
+                                    </label>
+                                    <label class="gender-option">
+                                        <input type="radio" name="voiceGender" value="neutral" />
+                                        <span>🤖 Neutral</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
                         <button type="submit" class="generate-btn" id="generateBtn">✨ Generate Character</button>
 
                         <div class="divider">or</div>
@@ -75,7 +156,7 @@
                     </p>
                 </section>
 
-                <!-- SQUARE AD - Under the controls -->
+                <!-- SQUARE AD - With content wrapper -->
                 <div class="ad-square">
                     <span class="ad-label">— Sponsored —</span>
                     <div class="ad-square-content" id="adSquareContent">
@@ -90,7 +171,7 @@
                 </div>
             </div>
 
-            <!-- RIGHT COLUMN: Result Area (No Ad) -->
+            <!-- RIGHT COLUMN: Result Area -->
             <div class="right-column">
                 <section class="result-area" id="resultArea">
                     <div id="resultContent">
@@ -106,6 +187,41 @@
         </div>
     </main>
 
+    <!-- ========== CONTENT SECTION - ADD VALUE ========== -->
+    <section class="content-section">
+        <div class="content-container">
+            <h2>🎨 Why The Dramatic Plate?</h2>
+            <div class="content-grid">
+                <article class="content-card">
+                    <h3>🎭 Unique Characters</h3>
+                    <p>Every character is generated with a unique personality, combining random adjectives with your chosen item. From "Grumpy Banana" to "Sassy Strawberry," each creation is one-of-a-kind.</p>
+                </article>
+                <article class="content-card">
+                    <h3>🗣️ Voice & Animation</h3>
+                    <p>Watch your character come to life with animated expressions and hear them speak in their own voice. Choose from multiple languages and gender voices for a truly immersive experience.</p>
+                </article>
+                <article class="content-card">
+                    <h3>🌍 Family-Friendly Fun</h3>
+                    <p>Designed for all ages, our character generator is safe, inclusive, and guaranteed to bring a smile to your face. Perfect for creative writing, storytelling, or just a good laugh.</p>
+                </article>
+                <article class="content-card">
+                    <h3>📱 Share & Enjoy</h3>
+                    <p>Share your favourite characters on social media, save them for later, or challenge friends to create the most dramatic character. The fun never ends!</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== POPULAR CHARACTERS SECTION ========== -->
+    <section class="popular-section">
+        <div class="content-container">
+            <h2>⭐ Popular Characters</h2>
+            <div class="popular-grid" id="popularGrid">
+                <!-- Will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
     <!-- ========== FOOTER ========== -->
     <footer>
         <div class="footer-content">
@@ -117,6 +233,7 @@
                 <a href="about.html">About</a>
                 <a href="contact.html">Contact</a>
                 <a href="privacy.html">Privacy</a>
+                <a href="blog.html">Blog</a>
             </div>
             <div class="footer-social">
                 <a href="#" aria-label="Instagram">📸</a>
@@ -132,14 +249,14 @@
     <script src="script.js"></script>
     
     <!-- ============================================================
-         SAFE AD LOADER - SQUARE AD ONLY
+         AD LOADER - FIXED FOR ADSENSE COMPLIANCE
          ============================================================ -->
     <script>
         (function() {
             'use strict';
             
             // ============================================================
-            // 1. Your AdSense Configuration - SQUARE AD ONLY
+            // 1. AdSense Configuration
             // ============================================================
             const AD_CONFIG = {
                 square: {
@@ -151,14 +268,7 @@
             };
             
             // ============================================================
-            // 2. Track loaded state
-            // ============================================================
-            let squareAdLoaded = false;
-            let loadAttempts = 0;
-            const MAX_ATTEMPTS = 5;
-            
-            // ============================================================
-            // 3. Check if ad already has content
+            // 2. Check if ad already has content
             // ============================================================
             function adAlreadyHasContent(insElement) {
                 if (!insElement) return true;
@@ -173,7 +283,7 @@
             }
             
             // ============================================================
-            // 4. Check if container has visible width
+            // 3. Check if container has visible width
             // ============================================================
             function hasVisibleWidth(element) {
                 if (!element) return false;
@@ -182,7 +292,7 @@
             }
             
             // ============================================================
-            // 5. Load square ad
+            // 4. Load square ad with proper handling
             // ============================================================
             function loadSquareAd() {
                 const container = document.getElementById(AD_CONFIG.square.containerId);
@@ -197,7 +307,6 @@
                 if (adAlreadyHasContent(insElement)) {
                     console.log('Square ad already has content, skipping');
                     insElement.dataset.loaded = 'true';
-                    squareAdLoaded = true;
                     return true;
                 }
                 
@@ -226,7 +335,6 @@
                     
                     insElement.dataset.loaded = 'true';
                     insElement.dataset.loading = 'false';
-                    squareAdLoaded = true;
                     console.log('Square ad loaded successfully');
                     return true;
                     
@@ -236,7 +344,6 @@
                     if (e.message && e.message.includes('already have ads')) {
                         console.log('Square ad already has ads, marking as loaded');
                         insElement.dataset.loaded = 'true';
-                        squareAdLoaded = true;
                         return true;
                     }
                     
@@ -251,8 +358,12 @@
             }
             
             // ============================================================
-            // 6. Load all ads (only square ad)
+            // 5. Load all ads with retry
             // ============================================================
+            let squareAdLoaded = false;
+            let loadAttempts = 0;
+            const MAX_ATTEMPTS = 10;
+            
             function loadAllAds() {
                 loadAttempts++;
                 
@@ -261,39 +372,37 @@
                     return;
                 }
                 
-                console.log('Loading square ad, attempt', loadAttempts);
-                
                 if (!squareAdLoaded) {
                     squareAdLoaded = loadSquareAd();
                 }
                 
                 if (!squareAdLoaded && loadAttempts < MAX_ATTEMPTS) {
-                    setTimeout(loadAllAds, 800);
+                    setTimeout(loadAllAds, 1000);
                 } else if (squareAdLoaded) {
                     console.log('Square ad loaded successfully');
                 }
             }
             
             // ============================================================
-            // 7. Event Listeners
+            // 6. Event Listeners
             // ============================================================
             
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', function() {
-                    setTimeout(loadAllAds, 500);
+                    setTimeout(loadAllAds, 1000);
                 });
             } else {
-                setTimeout(loadAllAds, 500);
+                setTimeout(loadAllAds, 1000);
             }
             
             window.addEventListener('load', function() {
                 if (!squareAdLoaded) {
-                    setTimeout(loadAllAds, 300);
+                    setTimeout(loadAllAds, 500);
                 }
             });
             
             // ============================================================
-            // 8. Debug
+            // 7. Debug
             // ============================================================
             window.debugAds = function() {
                 console.log('=== Ad Debug ===');
@@ -313,7 +422,7 @@
                 console.log('========================');
             };
             
-            console.log('Ad loader ready (square ad only). Run debugAds() to debug.');
+            console.log('Ad loader ready. Run debugAds() to debug.');
             
         })();
     </script>

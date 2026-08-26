@@ -118,6 +118,238 @@ a:hover {
     transition: 0.3s;
 }
 
+/* ============================================================
+   HERO SECTION
+   ============================================================ */
+.hero-section {
+    background: linear-gradient(135deg, var(--dark-charcoal, #1a1a1a), #2d2d2d);
+    color: white;
+    padding: 3rem 5% 4rem;
+    border-bottom: 6px solid var(--neon-yellow, #FFDE21);
+}
+
+.hero-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.hero-content h1 {
+    font-family: 'Lobster', cursive;
+    font-size: 3.5rem;
+    color: var(--neon-yellow, #FFDE21);
+    margin-bottom: 0.5rem;
+}
+
+.hero-subtitle {
+    font-size: 1.4rem;
+    color: #ddd;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    font-weight: 300;
+}
+
+.hero-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.hero-feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    text-align: left;
+    background: rgba(255,255,255,0.05);
+    padding: 1.2rem;
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: all 0.3s;
+}
+
+.hero-feature:hover {
+    background: rgba(255,255,255,0.1);
+    transform: translateY(-3px);
+}
+
+.hero-feature > span {
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.hero-feature h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    color: var(--neon-yellow, #FFDE21);
+    margin: 0 0 0.2rem;
+}
+
+.hero-feature p {
+    font-size: 0.85rem;
+    opacity: 0.8;
+    margin: 0;
+}
+
+/* ============================================================
+   CONTENT SECTION - VALUE ADD
+   ============================================================ */
+.content-section {
+    background: #f5f0eb;
+    padding: 4rem 5%;
+}
+
+.content-container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.content-section h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.8rem;
+    text-align: center;
+    margin-bottom: 2.5rem;
+    color: var(--dark-charcoal, #1a1a1a);
+}
+
+.content-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 2rem;
+}
+
+.content-card {
+    background: white;
+    padding: 2rem;
+    border-radius: var(--border-radius-md, 20px);
+    border: 3px solid var(--dark-charcoal, #1a1a1a);
+    box-shadow: 8px 8px 0 var(--neon-yellow, #FFDE21);
+    transition: all 0.3s;
+}
+
+.content-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 12px 12px 0 var(--neon-yellow, #FFDE21);
+}
+
+.content-card h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    color: var(--hot-magenta, #FF006E);
+    margin-bottom: 0.5rem;
+}
+
+.content-card p {
+    color: #444;
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+/* ============================================================
+   POPULAR CHARACTERS SECTION
+   ============================================================ */
+.popular-section {
+    background: white;
+    padding: 4rem 5%;
+}
+
+.popular-section h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.8rem;
+    text-align: center;
+    margin-bottom: 2.5rem;
+    color: var(--dark-charcoal, #1a1a1a);
+}
+
+.popular-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.popular-card {
+    text-align: center;
+    padding: 1.5rem;
+    background: #faf7f2;
+    border-radius: var(--border-radius-md, 20px);
+    border: 2px solid var(--dark-charcoal, #1a1a1a);
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.popular-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 6px 6px 0 var(--neon-yellow, #FFDE21);
+}
+
+.popular-card .emoji {
+    font-size: 3rem;
+    display: block;
+}
+
+.popular-card .name {
+    font-weight: 700;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.popular-card .category {
+    font-size: 0.75rem;
+    opacity: 0.6;
+    display: block;
+    margin-top: 0.2rem;
+}
+
+/* ============================================================
+   RESPONSIVE - CONTENT SECTIONS
+   ============================================================ */
+@media (max-width: 768px) {
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .hero-features {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .content-section h2,
+    .popular-section h2 {
+        font-size: 2.2rem;
+    }
+    
+    .content-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+    
+    .hero-features {
+        grid-template-columns: 1fr;
+    }
+    
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .popular-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .content-card {
+        padding: 1.2rem;
+    }
+}
+
 /* ---------- PAGE WRAPPER (About, Contact, Privacy) ---------- */
 .page-wrapper {
     background: linear-gradient(135deg, var(--electric-teal), var(--neon-yellow));

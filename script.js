@@ -774,3 +774,69 @@ window.addEventListener('load', function() {
         `;
     }
 });
+
+// ============================================================
+// 16. Popular Characters - Generate static preview
+// ============================================================
+function generatePopularCharacters() {
+    const grid = document.getElementById('popularGrid');
+    if (!grid) return;
+    
+    const popularItems = [
+        { emoji: '🍌', name: 'Grumpy Banana', category: 'Fruits' },
+        { emoji: '🐶', name: 'Dramatic Dog', category: 'Animals' },
+        { emoji: '🍕', name: 'Judgmental Pizza', category: 'Food' },
+        { emoji: '🥕', name: 'Sassy Carrot', category: 'Vegetables' },
+        { emoji: '🦊', name: 'Mysterious Fox', category: 'Animals' },
+        { emoji: '🍓', name: 'Overdramatic Strawberry', category: 'Fruits' },
+        { emoji: '🐱', name: 'Moody Cat', category: 'Animals' },
+        { emoji: '🍦', name: 'Chill Ice Cream', category: 'Desserts' },
+    ];
+    
+    grid.innerHTML = popularItems.map(item => `
+        <div class="popular-card" onclick="generateFromPopular('${item.name}', '${item.category}')">
+            <span class="emoji">${item.emoji}</span>
+            <span class="name">${item.name}</span>
+            <span class="category">${item.category}</span>
+        </div>
+    `).join('');
+}
+
+// Helper function for popular card clicks
+window.generateFromPopular = function(name, category) {
+    // Find the category key
+    let categoryKey = null;
+    let itemKey = null;
+    
+    for (const [catKey, catValue] of Object.entries(categoryMap)) {
+        if (catValue.label.includes(category) || category.includes(catValue.label)) {
+            categoryKey = catKey;
+            // Try to find matching item
+            for (const [itemKeyVal, itemValue] of Object.entries(catValue.items)) {
+                if (name.toLowerCase().includes(itemValue.label.toLowerCase())) {
+                    itemKey = itemKeyVal;
+                    break;
+                }
+            }
+            if (itemKey) break;
+        }
+    }
+    
+    if (categoryKey && itemKey) {
+        categorySelect.value = categoryKey;
+        const event = new Event('change');
+        categorySelect.dispatchEvent(event);
+        setTimeout(() => {
+            itemSelect.value = itemKey;
+            generateDrama(categoryKey, itemKey);
+        }, 100);
+    } else {
+        // If not found, generate random
+        generateRandomDrama();
+    }
+};
+
+// Call on load
+window.addEventListener('load', function() {
+    generatePopularCharacters();
+});
