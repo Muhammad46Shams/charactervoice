@@ -13,7 +13,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lobster&family=Inter:opsz@14..32&display=swap" rel="stylesheet" />
     
-    <!-- Google AdSense - LOAD AFTER CONTENT -->
+    <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8599952668216208" crossorigin="anonymous"></script>
 
     <!-- CSS -->
@@ -24,13 +24,13 @@
     <!-- ========== NAV ========== -->
     <nav class="navbar">
         <div class="nav-container">
-            <a href="https://character-voice.netlify.app/" class="logo">🎭 The <span>Dramatic</span> Plate</a>
+            <a href="index.html" class="logo">🎭 The <span>Dramatic</span> Plate</a>
             <ul class="nav-links">
                 <li><a href="index.html" class="active">Home</a></li>
                 <li><a href="about.html">About</a></li>
+                <li><a href="blog.html">Blog</a></li>
                 <li><a href="contact.html">Contact</a></li>
                 <li><a href="privacy.html">Privacy</a></li>
-                <li><a href="blog.html">Blog</a></li>
             </ul>
             <button class="nav-toggle" aria-label="Toggle navigation">
                 <span></span><span></span><span></span>
@@ -136,10 +136,7 @@
                                         <input type="radio" name="voiceGender" value="female" />
                                         <span>👩 Female</span>
                                     </label>
-                                    <label class="gender-option">
-                                        <input type="radio" name="voiceGender" value="neutral" />
-                                        <span>🤖 Neutral</span>
-                                    </label>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -156,7 +153,7 @@
                     </p>
                 </section>
 
-                <!-- SQUARE AD - With content wrapper -->
+                <!-- SQUARE AD - KEEP BUT WITH CONTENT ABOVE -->
                 <div class="ad-square">
                     <span class="ad-label">— Sponsored —</span>
                     <div class="ad-square-content" id="adSquareContent">
@@ -187,10 +184,26 @@
         </div>
     </main>
 
-    <!-- ========== CONTENT SECTION - ADD VALUE ========== -->
+    <!-- ========== CONTENT SECTION - SUBSTANTIAL TEXT ========== -->
     <section class="content-section">
         <div class="content-container">
             <h2>🎨 Why The Dramatic Plate?</h2>
+            
+            <!-- ADD THIS: Detailed content before any ads -->
+            <div class="content-text-block">
+                <h3>What is a Character Generator?</h3>
+                <p>A character generator is a creative tool that helps you create unique personalities for everyday objects, animals, and foods. The Dramatic Plate takes this concept further by adding voice synthesis, animation, and multi-language support to bring your characters to life.</p>
+                
+                <h3>How Does the Character Generator Work?</h3>
+                <p>Our character generator uses a combination of random adjectives and your chosen item to create a unique character. For example, selecting "Banana" might give you "Grumpy Banana" or "Sassy Banana" - each with their own personality, voice, and appearance. The generator combines these elements with AI-powered voice synthesis to create a truly immersive experience.</p>
+                
+                <h3>Why Use a Character Generator?</h3>
+                <p>Character generators are perfect for creative writing, classroom activities, role-playing games, or just having fun with friends. They help overcome creative blocks and provide endless inspiration. Teachers use them to engage students, writers use them to develop characters, and families use them for entertainment.</p>
+                
+                <h3>Our Commitment to Quality</h3>
+                <p>Every character generated on The Dramatic Plate is designed to be family-friendly, inclusive, and fun. We carefully curate our categories and items to ensure a diverse range of characters that appeal to all ages. Our voice synthesis supports 15+ languages, making character creation accessible to a global audience.</p>
+            </div>
+            
             <div class="content-grid">
                 <article class="content-card">
                     <h3>🎭 Unique Characters</h3>
@@ -216,8 +229,71 @@
     <section class="popular-section">
         <div class="content-container">
             <h2>⭐ Popular Characters</h2>
+            <p class="popular-intro">Here are some of the most beloved characters created by our community. Try generating your own and see what drama unfolds!</p>
             <div class="popular-grid" id="popularGrid">
                 <!-- Will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== HOW TO USE SECTION ========== -->
+    <section class="how-to-section">
+        <div class="content-container">
+            <h2>📖 How to Use The Dramatic Plate</h2>
+            <div class="how-to-grid">
+                <div class="how-to-step">
+                    <span class="step-number">1</span>
+                    <h3>Choose a Category</h3>
+                    <p>Start by selecting a category that interests you - Animals, Fruits, Food, Vegetables, Drinks, Desserts, Birds, or Sea Creatures.</p>
+                </div>
+                <div class="how-to-step">
+                    <span class="step-number">2</span>
+                    <h3>Pick an Item</h3>
+                    <p>Choose a specific item from your selected category. Each item has its own personality potential and visual style.</p>
+                </div>
+                <div class="how-to-step">
+                    <span class="step-number">3</span>
+                    <h3>Select Voice Settings</h3>
+                    <p>Choose your preferred language and voice gender. With 15+ languages and three gender options, you can customize the voice to your liking.</p>
+                </div>
+                <div class="how-to-step">
+                    <span class="step-number">4</span>
+                    <h3>Generate & Enjoy</h3>
+                    <p>Click "Generate Character" and watch your creation come to life with personality, voice, and animation. Share it with friends or generate another!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FAQ SECTION ========== -->
+    <section class="faq-section">
+        <div class="content-container">
+            <h2>❓ Frequently Asked Questions</h2>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h3>Is The Dramatic Plate free to use?</h3>
+                    <p>Yes! The Dramatic Plate is completely free to use. Generate as many characters as you want, share them with friends, and enjoy the fun.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Do I need to create an account?</h3>
+                    <p>No account is required. Simply visit our website and start generating characters immediately. We respect your privacy and don't require personal information to use the generator.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>What languages are supported?</h3>
+                    <p>We support 15+ languages including English (US, UK, Ireland), Spanish, French, German, Italian, Portuguese, Dutch, Polish, Russian, Japanese, Korean, Chinese (Mandarin), Hindi, and Arabic.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Can I use characters for commercial purposes?</h3>
+                    <p>Characters generated on The Dramatic Plate are for personal and non-commercial use. For commercial use, please contact us for licensing information.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>How do I share my characters?</h3>
+                    <p>After generating a character, use our social media share buttons to post to Twitter, Facebook, Pinterest, WhatsApp, Reddit, or LinkedIn. You can also copy the character description to share anywhere.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Is the content family-friendly?</h3>
+                    <p>Absolutely! All content on The Dramatic Plate is designed to be family-friendly and suitable for all ages. We carefully curate our content to ensure it's appropriate and inclusive.</p>
+                </div>
             </div>
         </div>
     </section>
@@ -231,9 +307,9 @@
             <div class="footer-links">
                 <a href="index.html">Home</a>
                 <a href="about.html">About</a>
+                <a href="blog.html">Blog</a>
                 <a href="contact.html">Contact</a>
                 <a href="privacy.html">Privacy</a>
-                <a href="blog.html">Blog</a>
             </div>
             <div class="footer-social">
                 <a href="#" aria-label="Instagram">📸</a>
@@ -249,7 +325,7 @@
     <script src="script.js"></script>
     
     <!-- ============================================================
-         AD LOADER - FIXED FOR ADSENSE COMPLIANCE
+         AD LOADER - FOR INDEX.HTML
          ============================================================ -->
     <script>
         (function() {

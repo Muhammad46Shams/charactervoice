@@ -186,7 +186,109 @@ const categoryMap = {
 };
 
 // ============================================================
-// 3. DOM References
+// 3. Language Translations for Voice Prompts
+// ============================================================
+const languageTranslations = {
+    'en-US': {
+        intro: 'Introducing...',
+        alsoSaid: 'Also said:',
+        emojiIntro: '🎭',
+        getYourOwn: 'Get your own cartoon character at The Dramatic Plate!',
+    },
+    'en-GB': {
+        intro: 'Introducing...',
+        alsoSaid: 'Also said:',
+        emojiIntro: '🎭',
+        getYourOwn: 'Get your own cartoon character at The Dramatic Plate!',
+    },
+    'en-IE': {
+        intro: 'Introducing...',
+        alsoSaid: 'Also said:',
+        emojiIntro: '🎭',
+        getYourOwn: 'Get your own cartoon character at The Dramatic Plate!',
+    },
+    'es-ES': {
+        intro: 'Presentando a...',
+        alsoSaid: 'También dijo:',
+        emojiIntro: '🎭',
+        getYourOwn: '¡Consigue tu propio personaje de dibujos animados en The Dramatic Plate!',
+    },
+    'fr-FR': {
+        intro: 'Présentation de...',
+        alsoSaid: 'A également dit:',
+        emojiIntro: '🎭',
+        getYourOwn: 'Obtenez votre propre personnage de dessin animé sur The Dramatic Plate!',
+    },
+    'de-DE': {
+        intro: 'Vorstellung...',
+        alsoSaid: 'Sagte auch:',
+        emojiIntro: '🎭',
+        getYourOwn: 'Holen Sie sich Ihren eigenen Cartoon-Charakter bei The Dramatic Plate!',
+    },
+    'it-IT': {
+        intro: 'Presentando...',
+        alsoSaid: 'Ha anche detto:',
+        emojiIntro: '🎭',
+        getYourOwn: 'Ottieni il tuo personaggio dei cartoni animati su The Dramatic Plate!',
+    },
+    'pt-PT': {
+        intro: 'Apresentando...',
+        alsoSaid: 'Também disse:',
+        emojiIntro: '🎭',
+        getYourOwn: 'Obtenha o seu próprio personagem de desenho animado no The Dramatic Plate!',
+    },
+    'nl-NL': {
+        intro: 'Introduceren...',
+        alsoSaid: 'Zei ook:',
+        emojiIntro: '🎭',
+        getYourOwn: 'Krijg je eigen tekenfilmkarakter bij The Dramatic Plate!',
+    },
+    'pl-PL': {
+        intro: 'Przedstawiam...',
+        alsoSaid: 'Powiedział również:',
+        emojiIntro: '🎭',
+        getYourOwn: 'Zdobądź swoją własną postać z kreskówki na The Dramatic Plate!',
+    },
+    'ru-RU': {
+        intro: 'Представляем...',
+        alsoSaid: 'Также сказал:',
+        emojiIntro: '🎭',
+        getYourOwn: 'Получите своего собственного мультяшного персонажа на The Dramatic Plate!',
+    },
+    'ja-JP': {
+        intro: '紹介します...',
+        alsoSaid: 'また言った:',
+        emojiIntro: '🎭',
+        getYourOwn: 'The Dramatic Plateでオリジナルのキャラクターを手に入れよう！',
+    },
+    'ko-KR': {
+        intro: '소개합니다...',
+        alsoSaid: '또한 말하기:',
+        emojiIntro: '🎭',
+        getYourOwn: 'The Dramatic Plate에서 나만의 캐릭터를 만나보세요!',
+    },
+    'zh-CN': {
+        intro: '介绍...',
+        alsoSaid: '还说:',
+        emojiIntro: '🎭',
+        getYourOwn: '在The Dramatic Plate获取你自己的卡通角色！',
+    },
+    'hi-IN': {
+        intro: 'पेश है...',
+        alsoSaid: 'यह भी कहा:',
+        emojiIntro: '🎭',
+        getYourOwn: 'The Dramatic Plate पर अपना खुद का कार्टून चरित्र प्राप्त करें!',
+    },
+    'ar-SA': {
+        intro: 'تقديم...',
+        alsoSaid: 'قال أيضا:',
+        emojiIntro: '🎭',
+        getYourOwn: 'احصل على شخصية الكرتون الخاصة بك في The Dramatic Plate!',
+    }
+};
+
+// ============================================================
+// 4. DOM References
 // ============================================================
 const categorySelect = document.getElementById('categorySelect');
 const itemSelect = document.getElementById('itemSelect');
@@ -194,53 +296,177 @@ const form = document.getElementById('generatorForm');
 const resultContent = document.getElementById('resultContent');
 const generateBtn = document.getElementById('generateBtn');
 const randomBtn = document.getElementById('randomBtn');
+const languageSelect = document.getElementById('languageSelect');
 
 // ============================================================
-// 4. Voiceover System
+// 5. IMPROVED Voice Selection System
 // ============================================================
 let currentUtterance = null;
 let isPlaying = false;
 let lastCharacterName = '';
 let lastQuoteText = '';
 let lastJokeText = '';
+let lastLanguage = 'en-IE';
+let lastGender = 'male';
 
-function speakCharacter(name, quote, joke) {
+// Male voice names to look for (common browser voice names)
+const maleVoiceNames = [
+    'male', 'david', 'daniel', 'alex', 'michael', 'james', 'john', 'robert', 
+    'william', 'richard', 'joseph', 'thomas', 'charles', 'christopher', 'matthew',
+    'anthony', 'mark', 'donald', 'steven', 'paul', 'andrew', 'joshua', 'kenneth',
+    'kevin', 'brian', 'george', 'timothy', 'ronald', 'edward', 'jason', 'jeffrey',
+    'ryan', 'jacob', 'gary', 'nicholas', 'eric', 'jonathan', 'stephen', 'larry',
+    'justin', 'scott', 'brandon', 'benjamin', 'samuel', 'raymond', 'gregory',
+    'frank', 'alexander', 'patrick', 'jack', 'dennis', 'jerry', 'tyler', 'aaron',
+    'jose', 'adam', 'nathan', 'henry', 'zachary', 'todd', 'wayne', 'kyle',
+    'chad', 'carl', 'dean', 'steve', 'bruce', 'bob', 'bill', 'mike'
+];
+
+// Female voice names to look for (common browser voice names)
+const femaleVoiceNames = [
+    'female', 'samantha', 'karen', 'emma', 'zira', 'alice', 'susan', 'jessica',
+    'amanda', 'melissa', 'sarah', 'lisa', 'angela', 'kimberly', 'laura', 'amy',
+    'jennifer', 'nicole', 'michelle', 'tammy', 'deborah', 'elizabeth', 'heather',
+    'helen', 'diana', 'catherine', 'katherine', 'anne', 'maria', 'nancy', 'ruth',
+    'carol', 'janet', 'lori', 'cindy', 'terry', 'kathy', 'judy', 'cheryl',
+    'megan', 'ashley', 'lauren', 'rachel', 'julie', 'tiffany', 'monica', 'stacy',
+    'tina', 'sandra', 'bonnie', 'jill', 'barbara', 'nina', 'lily', 'rose'
+];
+
+function getVoiceForLanguageAndGender(lang, gender) {
+    if (!window.speechSynthesis) return null;
+    
+    let voices = window.speechSynthesis.getVoices();
+    
+    // If no voices, wait and try again
+    if (!voices || voices.length === 0) {
+        return null;
+    }
+    
+    // First, try to find voices that match the language exactly
+    let langVoices = voices.filter(v => v.lang.startsWith(lang.split('-')[0]));
+    
+    // If no exact language match, try to find any voice with the language
+    if (langVoices.length === 0) {
+        langVoices = voices.filter(v => v.lang.includes(lang.split('-')[0]));
+    }
+    
+    // If still no match, use all voices
+    if (langVoices.length === 0) {
+        langVoices = voices;
+    }
+    
+    console.log(`Found ${langVoices.length} voices for language ${lang}`);
+    
+    let selectedVoice = null;
+    
+    if (gender === 'male') {
+        // Try to find a male voice
+        for (const voice of langVoices) {
+            const voiceName = voice.name.toLowerCase();
+            // Check if voice name contains any male name
+            for (const maleName of maleVoiceNames) {
+                if (voiceName.includes(maleName)) {
+                    selectedVoice = voice;
+                    console.log(`Found male voice: ${voice.name}`);
+                    break;
+                }
+            }
+            if (selectedVoice) break;
+        }
+        
+        // If no male voice found, use the first available voice
+        if (!selectedVoice && langVoices.length > 0) {
+            selectedVoice = langVoices[0];
+            console.log(`No male voice found, using default: ${selectedVoice.name}`);
+        }
+    } else {
+        // Female voice
+        for (const voice of langVoices) {
+            const voiceName = voice.name.toLowerCase();
+            for (const femaleName of femaleVoiceNames) {
+                if (voiceName.includes(femaleName)) {
+                    selectedVoice = voice;
+                    console.log(`Found female voice: ${voice.name}`);
+                    break;
+                }
+            }
+            if (selectedVoice) break;
+        }
+        
+        // If no female voice found, use the first available voice
+        if (!selectedVoice && langVoices.length > 0) {
+            selectedVoice = langVoices[0];
+            console.log(`No female voice found, using default: ${selectedVoice.name}`);
+        }
+    }
+    
+    return selectedVoice;
+}
+
+function getLanguageTranslation(lang) {
+    return languageTranslations[lang] || languageTranslations['en-IE'];
+}
+
+function speakCharacter(name, quote, joke, lang, gender) {
     if (window.speechSynthesis) window.speechSynthesis.cancel();
     if (!window.speechSynthesis) return;
 
+    // Clean up the joke and quote
     let cleanJoke = joke;
     if (cleanJoke.startsWith('"') && cleanJoke.endsWith('"')) {
         cleanJoke = cleanJoke.slice(1, -1);
     }
+    let cleanQuote = quote;
+    if (cleanQuote.startsWith('"') && cleanQuote.endsWith('"')) {
+        cleanQuote = cleanQuote.slice(1, -1);
+    }
 
-    const message = `Introducing... ${name}! ${quote} Also said: ${cleanJoke}`;
+    // Get translation for the selected language
+    const translation = getLanguageTranslation(lang);
+    
+    // Build the message in the selected language
+    const message = `${translation.intro} ${name}! ${cleanQuote} ${translation.alsoSaid} ${cleanJoke}`;
 
     const utterance = new SpeechSynthesisUtterance(message);
     utterance.rate = 0.85;
-    utterance.pitch = 1.1;
+    
+    // Adjust pitch based on gender
+    if (gender === 'male') {
+        utterance.pitch = 0.9;
+        utterance.rate = 0.85;
+    } else {
+        utterance.pitch = 1.3;
+        utterance.rate = 0.9;
+    }
+    
     utterance.volume = 1;
+    utterance.lang = lang;
 
-    const voices = window.speechSynthesis.getVoices();
-    const irishVoice = voices.find(v => v.lang.includes('en-IE'));
-    const englishVoice = voices.find(v => v.lang.includes('en-GB'));
-    if (irishVoice) utterance.voice = irishVoice;
-    else if (englishVoice) utterance.voice = englishVoice;
+    // Find appropriate voice
+    const voice = getVoiceForLanguageAndGender(lang, gender);
+    if (voice) {
+        utterance.voice = voice;
+        console.log(`Using voice: ${voice.name} (${voice.lang})`);
+    } else {
+        console.warn('No voice found, using default');
+    }
 
     currentUtterance = utterance;
     isPlaying = true;
-    updateVoiceButtons(true);
+    updateVoiceButtons(true, lang, gender);
     startCartoonSpeaking();
 
     utterance.onend = () => {
         isPlaying = false;
-        updateVoiceButtons(false);
+        updateVoiceButtons(false, lang, gender);
         currentUtterance = null;
         stopCartoonSpeaking();
     };
 
     utterance.onerror = () => {
         isPlaying = false;
-        updateVoiceButtons(false);
+        updateVoiceButtons(false, lang, gender);
         currentUtterance = null;
         stopCartoonSpeaking();
     };
@@ -259,24 +485,45 @@ function stopVoice() {
 function replayVoice() {
     stopVoice();
     setTimeout(() => {
-        speakCharacter(lastCharacterName, lastQuoteText, lastJokeText);
-    }, 200);
+        speakCharacter(lastCharacterName, lastQuoteText, lastJokeText, lastLanguage, lastGender);
+    }, 300);
 }
 
-function updateVoiceButtons(isPlaying) {
+function updateVoiceButtons(isPlaying, lang, gender) {
     const playBtn = document.getElementById('playVoiceBtn');
     const stopBtn = document.getElementById('stopVoiceBtn');
+    const voiceStatus = document.getElementById('voiceStatus');
+    
     if (playBtn) {
         playBtn.disabled = isPlaying;
-        playBtn.innerHTML = isPlaying ? '🔊 Speaking...' : '🔊 Play Voice';
-        if (isPlaying) playBtn.classList.add('playing');
-        else playBtn.classList.remove('playing');
+        if (isPlaying) {
+            const genderEmoji = gender === 'male' ? '👨' : '👩';
+            const langLabel = lang ? languageSelect.options[languageSelect.selectedIndex]?.text || '' : '';
+            playBtn.innerHTML = `🔊 Speaking ${langLabel} ${genderEmoji}...`;
+            playBtn.classList.add('playing');
+        } else {
+            const genderEmoji = lastGender === 'male' ? '👨' : '👩';
+            const langLabel = lastLanguage ? languageSelect.options[languageSelect.selectedIndex]?.text || '' : '';
+            playBtn.innerHTML = `🔊 Play Voice (${langLabel})`;
+            playBtn.classList.remove('playing');
+        }
     }
-    if (stopBtn) stopBtn.disabled = !isPlaying;
+    if (stopBtn) {
+        stopBtn.disabled = !isPlaying;
+    }
+    if (voiceStatus) {
+        if (isPlaying) {
+            const genderEmoji = gender === 'male' ? '👨' : '👩';
+            voiceStatus.textContent = `🔊 Speaking in ${genderEmoji} voice...`;
+            voiceStatus.style.display = 'block';
+        } else {
+            voiceStatus.style.display = 'none';
+        }
+    }
 }
 
 // ============================================================
-// 5. Cartoon Speaking Animation
+// 6. Cartoon Speaking Animation
 // ============================================================
 let speakingInterval = null;
 
@@ -343,7 +590,7 @@ function stopCartoonSpeaking() {
 }
 
 // ============================================================
-// 6. Populate Dropdowns
+// 7. Populate Dropdowns
 // ============================================================
 function populateCategories() {
     categorySelect.innerHTML = '<option value="">— Select —</option>';
@@ -371,7 +618,7 @@ categorySelect.addEventListener('change', function() {
 });
 
 // ============================================================
-// 7. Helper Functions
+// 8. Helper Functions
 // ============================================================
 async function fetchWithTimeout(url, options = {}, timeout = 5000) {
     const controller = new AbortController();
@@ -399,14 +646,32 @@ function getRandomItem() {
     return { categoryKey: randomCategoryKey, itemKey: randomItemKey };
 }
 
+function escapeHtmlAttr(str) {
+    return str.replace(/&/g, '&amp;')
+              .replace(/"/g, '&quot;')
+              .replace(/'/g, '&#39;');
+}
+
+function getSelectedVoiceSettings() {
+    const lang = languageSelect.value;
+    const genderRadio = document.querySelector('input[name="voiceGender"]:checked');
+    const gender = genderRadio ? genderRadio.value : 'male';
+    return { lang, gender };
+}
+
 // ============================================================
-// 8. Generate Character (main function) - COMPLETELY FIXED
+// 9. Generate Character - UPDATED
 // ============================================================
 async function generateDrama(categoryKey, itemKey) {
     if (!categoryKey || !itemKey) {
         alert('Please select both a category and an item!');
         return;
     }
+
+    // Get voice settings
+    const voiceSettings = getSelectedVoiceSettings();
+    lastLanguage = voiceSettings.lang;
+    lastGender = voiceSettings.gender;
 
     const category = categoryMap[categoryKey];
     const item = category.items[itemKey];
@@ -458,19 +723,15 @@ async function generateDrama(categoryKey, itemKey) {
         lastQuoteText = quoteText;
         lastJokeText = jokeText;
 
-        // FIX: Properly escape for HTML attributes using a helper function
-        function escapeHtmlAttr(str) {
-            return str.replace(/&/g, '&amp;')
-                      .replace(/"/g, '&quot;')
-                      .replace(/'/g, '&#39;');
-        }
-
         const safeName = escapeHtmlAttr(characterName);
         const safeQuote = escapeHtmlAttr(quoteText);
         const safeJoke = escapeHtmlAttr(jokeText);
 
-        // FIX: Use a different approach for onclick - use data attributes instead
-        // This avoids the quote escaping issue entirely
+        // Get language label for display
+        const langLabel = languageSelect.options[languageSelect.selectedIndex]?.text || 'English';
+        const genderEmoji = lastGender === 'male' ? '👨' : '👩';
+        const genderLabel = lastGender === 'male' ? 'Male' : 'Female';
+
         resultContent.innerHTML = `
             <div id="resultContent">
                 <div class="speech-bubble" id="speechBubble">
@@ -509,16 +770,23 @@ async function generateDrama(categoryKey, itemKey) {
                 <div class="result-joke">💬 <em>also said:</em> ${jokeText}</div>
                 <span class="result-category-tag">${category.label} • ${itemLabel}</span>
 
+                <!-- Voice Settings Display -->
+                <div class="voice-settings-display">
+                    <span class="voice-badge">🌐 ${langLabel}</span>
+                    <span class="voice-badge">${genderEmoji} ${genderLabel}</span>
+                    <span class="voice-badge" id="voiceStatus" style="display:none;">🔊 Speaking...</span>
+                </div>
+
                 <div class="voice-controls">
                     <button class="voice-btn" id="playVoiceBtn" onclick="replayVoice()">
-                        🔊 Play Voice
+                        🔊 Play Voice (${langLabel})
                     </button>
                     <button class="voice-btn" id="stopVoiceBtn" onclick="stopVoice()" disabled>
                         ⏹️ Stop
                     </button>
                 </div>
 
-                <!-- SHARE BUTTONS - FIXED: Using encoded data attributes -->
+                <!-- SHARE BUTTONS -->
                 <div class="share-buttons">
                     <button data-share="twitter" data-name="${safeName}" data-quote="${safeQuote}" data-joke="${safeJoke}">
                         🐦 Twitter
@@ -545,7 +813,7 @@ async function generateDrama(categoryKey, itemKey) {
             </div>
         `;
 
-        // FIX: Attach event listeners to the share buttons
+        // Attach event listeners to the share buttons
         document.querySelectorAll('.share-buttons button[data-share]').forEach(btn => {
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -554,7 +822,6 @@ async function generateDrama(categoryKey, itemKey) {
                 const quote = this.dataset.quote;
                 const joke = this.dataset.joke;
                 
-                // Call the appropriate share function
                 switch(type) {
                     case 'twitter': shareTwitter(name, quote, joke); break;
                     case 'facebook': shareFacebook(name, quote, joke); break;
@@ -568,7 +835,7 @@ async function generateDrama(categoryKey, itemKey) {
         });
 
         setTimeout(() => {
-            speakCharacter(characterName, quoteText, jokeText);
+            speakCharacter(characterName, quoteText, jokeText, lastLanguage, lastGender);
         }, 400);
 
     } catch (error) {
@@ -588,7 +855,7 @@ async function generateDrama(categoryKey, itemKey) {
 }
 
 // ============================================================
-// 9. Random Drama Function
+// 10. Random Drama Function
 // ============================================================
 function generateRandomDrama() {
     const { categoryKey, itemKey } = getRandomItem();
@@ -605,7 +872,7 @@ function generateRandomDrama() {
 }
 
 // ============================================================
-// 10. Social Share Functions - CLEAN AND WORKING
+// 11. Social Share Functions
 // ============================================================
 function shareTwitter(name, quote, joke) {
     let cleanJoke = joke.replace(/^"|"$/g, '').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
@@ -701,7 +968,6 @@ function copyToClipboard(name, quote, joke) {
         document.execCommand('copy');
         document.body.removeChild(textarea);
         
-        // Show feedback
         const btn = document.activeElement;
         if (btn) {
             const original = btn.textContent;
@@ -718,7 +984,7 @@ function copyToClipboard(name, quote, joke) {
 }
 
 // ============================================================
-// 11. Form & Button Events
+// 12. Form & Button Events
 // ============================================================
 form.addEventListener('submit', function(e) {
     e.preventDefault();
@@ -733,17 +999,21 @@ randomBtn.addEventListener('click', function(e) {
 });
 
 // ============================================================
-// 12. Pre-load voices
+// 13. Pre-load voices and debug
 // ============================================================
 if (window.speechSynthesis) {
+    // Force voice list to load
     window.speechSynthesis.getVoices();
     window.speechSynthesis.onvoiceschanged = () => {
-        window.speechSynthesis.getVoices();
+        const voices = window.speechSynthesis.getVoices();
+        console.log(`Loaded ${voices.length} voices`);
+        // Log available voices for debugging
+        voices.forEach(v => console.log(`Voice: ${v.name} (${v.lang})`));
     };
 }
 
 // ============================================================
-// 13. Make functions globally accessible
+// 14. Make functions globally accessible
 // ============================================================
 window.shareTwitter = shareTwitter;
 window.shareFacebook = shareFacebook;
@@ -756,7 +1026,7 @@ window.replayVoice = replayVoice;
 window.stopVoice = stopVoice;
 
 // ============================================================
-// 14. Welcome message
+// 15. Welcome message
 // ============================================================
 window.addEventListener('load', function() {
     const placeholder = document.querySelector('.placeholder-text');
@@ -771,12 +1041,15 @@ window.addEventListener('load', function() {
             <span class="big-emoji">🎭</span>
             Pick a category &amp; item above<br />
             <span style="font-size: 0.9rem; opacity: 0.7;">💬 ${randomWelcome}</span>
+            <span style="font-size: 0.8rem; opacity: 0.5; display: block; margin-top: 0.5rem;">
+                🌐 Select a language &amp; voice gender
+            </span>
         `;
     }
 });
 
 // ============================================================
-// 16. Popular Characters - Generate static preview
+// 16. Popular Characters
 // ============================================================
 function generatePopularCharacters() {
     const grid = document.getElementById('popularGrid');
@@ -802,16 +1075,13 @@ function generatePopularCharacters() {
     `).join('');
 }
 
-// Helper function for popular card clicks
 window.generateFromPopular = function(name, category) {
-    // Find the category key
     let categoryKey = null;
     let itemKey = null;
     
     for (const [catKey, catValue] of Object.entries(categoryMap)) {
         if (catValue.label.includes(category) || category.includes(catValue.label)) {
             categoryKey = catKey;
-            // Try to find matching item
             for (const [itemKeyVal, itemValue] of Object.entries(catValue.items)) {
                 if (name.toLowerCase().includes(itemValue.label.toLowerCase())) {
                     itemKey = itemKeyVal;
@@ -831,7 +1101,6 @@ window.generateFromPopular = function(name, category) {
             generateDrama(categoryKey, itemKey);
         }, 100);
     } else {
-        // If not found, generate random
         generateRandomDrama();
     }
 };

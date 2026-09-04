@@ -350,6 +350,367 @@ a:hover {
     }
 }
 
+
+/* ============================================================
+   HOW TO USE SECTION
+   ============================================================ */
+.how-to-section {
+    background: linear-gradient(135deg, #faf7f2, #f0ebe6);
+    padding: 4rem 5%;
+}
+
+.how-to-section h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.8rem;
+    text-align: center;
+    margin-bottom: 2.5rem;
+    color: var(--dark-charcoal, #1a1a1a);
+}
+
+.how-to-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.how-to-step {
+    background: white;
+    padding: 2rem;
+    border-radius: var(--border-radius-md, 20px);
+    border: 3px solid var(--dark-charcoal, #1a1a1a);
+    text-align: center;
+    position: relative;
+    transition: all 0.3s;
+}
+
+.how-to-step:hover {
+    transform: translateY(-5px);
+    box-shadow: 8px 8px 0 var(--neon-yellow, #FFDE21);
+}
+
+.step-number {
+    display: inline-block;
+    background: var(--hot-magenta, #FF006E);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    line-height: 40px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    border: 3px solid var(--dark-charcoal, #1a1a1a);
+}
+
+.how-to-step h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+    color: var(--dark-charcoal, #1a1a1a);
+    margin-bottom: 0.5rem;
+}
+
+.how-to-step p {
+    color: #555;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* ============================================================
+   FAQ SECTION
+   ============================================================ */
+.faq-section {
+    background: white;
+    padding: 4rem 5%;
+}
+
+.faq-section h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.8rem;
+    text-align: center;
+    margin-bottom: 2.5rem;
+    color: var(--dark-charcoal, #1a1a1a);
+}
+
+.faq-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 1.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    background: #f8f5f0;
+    padding: 1.5rem 2rem;
+    border-radius: var(--border-radius-md, 16px);
+    border-left: 4px solid var(--neon-yellow, #FFDE21);
+}
+
+.faq-item h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    color: var(--hot-magenta, #FF006E);
+    margin-bottom: 0.4rem;
+}
+
+.faq-item p {
+    color: #555;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* ============================================================
+   CONTENT TEXT BLOCK
+   ============================================================ */
+.content-text-block {
+    max-width: 800px;
+    margin: 0 auto 2.5rem;
+    background: white;
+    padding: 2rem;
+    border-radius: var(--border-radius-md, 16px);
+    border: 2px solid #e8e4df;
+}
+
+.content-text-block h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    color: var(--dark-charcoal, #1a1a1a);
+    margin: 1.2rem 0 0.4rem;
+}
+
+.content-text-block h3:first-child {
+    margin-top: 0;
+}
+
+.content-text-block p {
+    color: #444;
+    line-height: 1.8;
+    margin-bottom: 1rem;
+}
+
+.popular-intro {
+    text-align: center;
+    max-width: 600px;
+    margin: -1.5rem auto 2rem;
+    color: #666;
+    font-size: 1.05rem;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+    .how-to-section h2,
+    .faq-section h2 {
+        font-size: 2.2rem;
+    }
+    
+    .how-to-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .faq-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .content-text-block {
+        padding: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .how-to-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .how-to-step {
+        padding: 1.5rem;
+    }
+    
+    .faq-item {
+        padding: 1.2rem;
+    }
+    
+    .content-text-block {
+        padding: 1rem;
+    }
+    
+    .content-text-block h3 {
+        font-size: 1.1rem;
+    }
+}
+
+/* ============================================================
+   BLOG LAYOUT - FULL VERSION
+   ============================================================ */
+
+.blog-wrapper {
+    background: #faf7f2;
+    padding: 2rem 5%;
+    min-height: 70vh;
+}
+
+.blog-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.blog-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.blog-header h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    color: var(--dark-charcoal, #1a1a1a);
+}
+/* ============================================================
+   BLOG STYLES - FULL VERSION
+   ============================================================ */
+.blog-intro {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    background: #f8f5f0;
+    padding: 1.5rem 2rem;
+    border-radius: var(--border-radius-md, 16px);
+    border-left: 6px solid var(--hot-magenta, #FF006E);
+    margin-bottom: 2rem;
+}
+
+.blog-grid {
+    display: grid;
+    gap: 2.5rem;
+}
+
+.blog-post {
+    background: white;
+    padding: 2rem;
+    border-radius: var(--border-radius-md, 16px);
+    border: 1px solid #e8e4df;
+    transition: all 0.3s;
+    position: relative;
+}
+
+.blog-post:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+}
+
+.blog-category {
+    display: inline-block;
+    background: var(--neon-yellow, #FFDE21);
+    color: var(--dark-charcoal, #1a1a1a);
+    padding: 0.2rem 1rem;
+    border-radius: 60px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.8rem;
+}
+
+.blog-post h2 {
+    font-size: 1.6rem;
+    margin: 0 0 0.3rem;
+    color: var(--dark-charcoal, #1a1a1a);
+    font-family: 'Bebas Neue', sans-serif;
+}
+
+.blog-post h3 {
+    font-size: 1.1rem;
+    color: var(--hot-magenta, #FF006E);
+    margin: 1.2rem 0 0.4rem;
+    font-family: 'Bebas Neue', sans-serif;
+}
+
+.blog-meta {
+    font-size: 0.85rem;
+    color: var(--text-muted, #666);
+    margin-bottom: 1rem;
+}
+
+.blog-post p {
+    color: #444;
+    line-height: 1.8;
+    margin-bottom: 1rem;
+}
+
+.blog-post ul, 
+.blog-post ol {
+    color: #444;
+    line-height: 1.8;
+    margin: 0.5rem 0 1rem 1.5rem;
+}
+
+.blog-post li {
+    margin-bottom: 0.3rem;
+}
+
+.read-more {
+    display: inline-block;
+    color: var(--hot-magenta, #FF006E);
+    font-weight: 700;
+    text-decoration: none;
+    margin-top: 0.5rem;
+}
+
+.read-more:hover {
+    text-decoration: underline;
+}
+
+.blog-pagination {
+    text-align: center;
+    padding: 2rem 0 0;
+    border-top: 2px solid #f0ebe6;
+    margin-top: 1rem;
+}
+
+.pagination-text {
+    color: var(--text-muted, #666);
+    font-size: 0.9rem;
+}
+
+/* ============================================================
+   RESPONSIVE BLOG
+   ============================================================ */
+@media (max-width: 768px) {
+    .blog-intro {
+        padding: 1.2rem;
+        font-size: 1rem;
+    }
+    
+    .blog-post {
+        padding: 1.5rem;
+    }
+    
+    .blog-post h2 {
+        font-size: 1.4rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .blog-intro {
+        padding: 1rem;
+        font-size: 0.95rem;
+    }
+    
+    .blog-post {
+        padding: 1.2rem;
+    }
+    
+    .blog-post h2 {
+        font-size: 1.2rem;
+    }
+    
+    .blog-post h3 {
+        font-size: 1rem;
+    }
+}
+
 /* ---------- PAGE WRAPPER (About, Contact, Privacy) ---------- */
 .page-wrapper {
     background: linear-gradient(135deg, var(--electric-teal), var(--neon-yellow));
