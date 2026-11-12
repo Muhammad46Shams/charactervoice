@@ -193,97 +193,97 @@ const languageTranslations = {
         intro: 'Introducing...',
         alsoSaid: 'Also said:',
         emojiIntro: '🎭',
-        getYourOwn: 'Get your own cartoon character at The Dramatic Plate!',
+        getYourOwn: 'Get your own cartoon character at Cartoon Character Fun!',
     },
     'en-GB': {
         intro: 'Introducing...',
         alsoSaid: 'Also said:',
         emojiIntro: '🎭',
-        getYourOwn: 'Get your own cartoon character at The Dramatic Plate!',
+        getYourOwn: 'Get your own cartoon character at Cartoon Character Fun!',
     },
     'en-IE': {
         intro: 'Introducing...',
         alsoSaid: 'Also said:',
         emojiIntro: '🎭',
-        getYourOwn: 'Get your own cartoon character at The Dramatic Plate!',
+        getYourOwn: 'Get your own cartoon character at Cartoon Character Fun!',
     },
     'es-ES': {
         intro: 'Presentando a...',
         alsoSaid: 'También dijo:',
         emojiIntro: '🎭',
-        getYourOwn: '¡Consigue tu propio personaje de dibujos animados en The Dramatic Plate!',
+        getYourOwn: '¡Consigue tu propio personaje de dibujos animados en Cartoon Character Fun!',
     },
     'fr-FR': {
         intro: 'Présentation de...',
         alsoSaid: 'A également dit:',
         emojiIntro: '🎭',
-        getYourOwn: 'Obtenez votre propre personnage de dessin animé sur The Dramatic Plate!',
+        getYourOwn: 'Obtenez votre propre personnage de dessin animé sur Cartoon Character Fun!',
     },
     'de-DE': {
         intro: 'Vorstellung...',
         alsoSaid: 'Sagte auch:',
         emojiIntro: '🎭',
-        getYourOwn: 'Holen Sie sich Ihren eigenen Cartoon-Charakter bei The Dramatic Plate!',
+        getYourOwn: 'Holen Sie sich Ihren eigenen Cartoon-Charakter bei Cartoon Character Fun!',
     },
     'it-IT': {
         intro: 'Presentando...',
         alsoSaid: 'Ha anche detto:',
         emojiIntro: '🎭',
-        getYourOwn: 'Ottieni il tuo personaggio dei cartoni animati su The Dramatic Plate!',
+        getYourOwn: 'Ottieni il tuo personaggio dei cartoni animati su Cartoon Character Fun!',
     },
     'pt-PT': {
         intro: 'Apresentando...',
         alsoSaid: 'Também disse:',
         emojiIntro: '🎭',
-        getYourOwn: 'Obtenha o seu próprio personagem de desenho animado no The Dramatic Plate!',
+        getYourOwn: 'Obtenha o seu próprio personagem de desenho animado no Cartoon Character Fun!',
     },
     'nl-NL': {
         intro: 'Introduceren...',
         alsoSaid: 'Zei ook:',
         emojiIntro: '🎭',
-        getYourOwn: 'Krijg je eigen tekenfilmkarakter bij The Dramatic Plate!',
+        getYourOwn: 'Krijg je eigen tekenfilmkarakter bij Cartoon Character Fun!',
     },
     'pl-PL': {
         intro: 'Przedstawiam...',
         alsoSaid: 'Powiedział również:',
         emojiIntro: '🎭',
-        getYourOwn: 'Zdobądź swoją własną postać z kreskówki na The Dramatic Plate!',
+        getYourOwn: 'Zdobądź swoją własną postać z kreskówki na Cartoon Character Fun!',
     },
     'ru-RU': {
         intro: 'Представляем...',
         alsoSaid: 'Также сказал:',
         emojiIntro: '🎭',
-        getYourOwn: 'Получите своего собственного мультяшного персонажа на The Dramatic Plate!',
+        getYourOwn: 'Получите своего собственного мультяшного персонажа на Cartoon Character Fun!',
     },
     'ja-JP': {
         intro: '紹介します...',
         alsoSaid: 'また言った:',
         emojiIntro: '🎭',
-        getYourOwn: 'The Dramatic Plateでオリジナルのキャラクターを手に入れよう！',
+        getYourOwn: 'Cartoon Character Funでオリジナルのキャラクターを手に入れよう！',
     },
     'ko-KR': {
         intro: '소개합니다...',
         alsoSaid: '또한 말하기:',
         emojiIntro: '🎭',
-        getYourOwn: 'The Dramatic Plate에서 나만의 캐릭터를 만나보세요!',
+        getYourOwn: 'Cartoon Character Fun에서 나만의 캐릭터를 만나보세요!',
     },
     'zh-CN': {
         intro: '介绍...',
         alsoSaid: '还说:',
         emojiIntro: '🎭',
-        getYourOwn: '在The Dramatic Plate获取你自己的卡通角色！',
+        getYourOwn: '在Cartoon Character Fun获取你自己的卡通角色！',
     },
     'hi-IN': {
         intro: 'पेश है...',
         alsoSaid: 'यह भी कहा:',
         emojiIntro: '🎭',
-        getYourOwn: 'The Dramatic Plate पर अपना खुद का कार्टून चरित्र प्राप्त करें!',
+        getYourOwn: 'Cartoon Character Fun पर अपना खुद का कार्टून चरित्र प्राप्त करें!',
     },
     'ar-SA': {
         intro: 'تقديم...',
         alsoSaid: 'قال أيضا:',
         emojiIntro: '🎭',
-        getYourOwn: 'احصل على شخصية الكرتون الخاصة بك في The Dramatic Plate!',
+        getYourOwn: 'احصل على شخصية الكرتون الخاصة بك في Cartoon Character Fun!',
     }
 };
 
@@ -686,7 +686,18 @@ async function generateDrama(categoryKey, itemKey) {
     generateBtn.textContent = '⏳ Generating...';
     resultContent.innerHTML = `
         <div class="loading-text">
-            <span style="font-size: 3rem; display: block;">🎭</span>
+            <span class="logo-mark brand-placeholder-mark generation-loading-logo" aria-hidden="true">
+                <svg class="logo-mascot" viewBox="0 0 48 48" role="presentation">
+                    <path class="mascot-body" d="M8 22C8 12 15 6 24 6s16 6 16 16v8c0 8-7 13-16 13S8 36 8 30v-8Z"/>
+                    <path class="mascot-ear" d="m12 13-4-7 10 3M36 13l4-7-10 3"/>
+                    <ellipse class="mascot-eye" cx="18" cy="22" rx="2" ry="2.7"/>
+                    <ellipse class="mascot-eye" cx="30" cy="22" rx="2" ry="2.7"/>
+                    <path class="mascot-cheek" d="M11 28c3-2 6-1 7 1-2 2-5 2-7-1Zm19 1c1-2 4-3 7-1-2 3-5 3-7 1Z"/>
+                    <ellipse class="mascot-mouth" cx="24" cy="31" rx="4" ry="2.2"/>
+                </svg>
+                <span class="mascot-note note-one">♪</span>
+                <span class="mascot-note note-two">♫</span>
+            </span>
             Drawing your cartoon character...
         </div>
     `;
@@ -879,7 +890,7 @@ function shareTwitter(name, quote, joke) {
     let cleanQuote = quote.replace(/^"|"$/g, '').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
     let cleanName = name.replace(/&quot;/g, '"').replace(/&#39;/g, "'");
     
-    const shareText = `🎭 Just met ${cleanName}! ${cleanQuote} Also said: ${cleanJoke} 🎭 Get your own cartoon character at The Dramatic Plate!`;
+    const shareText = `🎭 Just met ${cleanName}! ${cleanQuote} Also said: ${cleanJoke} 🎭 Get your own cartoon character at Cartoon Character Fun!`;
     const url = 'https://thedramaticplate.ie';
     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(url)}`, '_blank', 'width=600,height=400');
 }
@@ -889,7 +900,7 @@ function shareFacebook(name, quote, joke) {
     let cleanQuote = quote.replace(/^"|"$/g, '').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
     let cleanName = name.replace(/&quot;/g, '"').replace(/&#39;/g, "'");
     
-    const shareText = `🎭 Just met ${cleanName}! ${cleanQuote} Also said: ${cleanJoke} 🎭 Get your own cartoon character at The Dramatic Plate!`;
+    const shareText = `🎭 Just met ${cleanName}! ${cleanQuote} Also said: ${cleanJoke} 🎭 Get your own cartoon character at Cartoon Character Fun!`;
     const url = 'https://thedramaticplate.ie';
     window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(shareText)}`, '_blank', 'width=600,height=400');
 }
@@ -910,7 +921,7 @@ function shareWhatsApp(name, quote, joke) {
     let cleanQuote = quote.replace(/^"|"$/g, '').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
     let cleanName = name.replace(/&quot;/g, '"').replace(/&#39;/g, "'");
     
-    const shareText = `🎭 Just met ${cleanName}! ${cleanQuote} Also said: ${cleanJoke} 🎭 Get your own cartoon character at The Dramatic Plate! https://thedramaticplate.ie`;
+    const shareText = `🎭 Just met ${cleanName}! ${cleanQuote} Also said: ${cleanJoke} 🎭 Get your own cartoon character at Cartoon Character Fun! https://thedramaticplate.ie`;
     window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`, '_blank', 'width=600,height=400');
 }
 
@@ -940,7 +951,7 @@ function copyToClipboard(name, quote, joke) {
     let cleanQuote = quote.replace(/^"|"$/g, '').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
     let cleanName = name.replace(/&quot;/g, '"').replace(/&#39;/g, "'");
     
-    const text = `🎭 Just met ${cleanName}! ${cleanQuote} Also said: ${cleanJoke} 🎭 Get your own cartoon character at The Dramatic Plate! https://thedramaticplate.ie`;
+    const text = `🎭 Just met ${cleanName}! ${cleanQuote} Also said: ${cleanJoke} 🎭 Get your own cartoon character at Cartoon Character Fun! https://thedramaticplate.ie`;
     
     if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(text).then(() => {
@@ -1038,7 +1049,20 @@ window.addEventListener('load', function() {
         ];
         const randomWelcome = welcomeQuotes[Math.floor(Math.random() * welcomeQuotes.length)];
         placeholder.innerHTML = `
-            <span class="big-emoji">🎭</span>
+            <span class="big-emoji placeholder-logo-wrap" aria-hidden="true">
+                <span class="logo-mark brand-placeholder-mark">
+                    <svg class="logo-mascot" viewBox="0 0 48 48" role="presentation">
+                        <path class="mascot-body" d="M8 22C8 12 15 6 24 6s16 6 16 16v8c0 8-7 13-16 13S8 36 8 30v-8Z"/>
+                        <path class="mascot-ear" d="m12 13-4-7 10 3M36 13l4-7-10 3"/>
+                        <ellipse class="mascot-eye" cx="18" cy="22" rx="2" ry="2.7"/>
+                        <ellipse class="mascot-eye" cx="30" cy="22" rx="2" ry="2.7"/>
+                        <path class="mascot-cheek" d="M11 28c3-2 6-1 7 1-2 2-5 2-7-1Zm19 1c1-2 4-3 7-1-2 3-5 3-7 1Z"/>
+                        <ellipse class="mascot-mouth" cx="24" cy="31" rx="4" ry="2.2"/>
+                    </svg>
+                    <span class="mascot-note note-one">♪</span>
+                    <span class="mascot-note note-two">♫</span>
+                </span>
+            </span>
             Pick a category &amp; item above<br />
             <span style="font-size: 0.9rem; opacity: 0.7;">💬 ${randomWelcome}</span>
             <span style="font-size: 0.8rem; opacity: 0.5; display: block; margin-top: 0.5rem;">
