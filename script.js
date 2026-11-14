@@ -457,6 +457,22 @@ function speakCharacter(name, quote, joke, lang, gender) {
     updateVoiceButtons(true, lang, gender);
     startCartoonSpeaking();
 
+    utterance.onboundary = (event) => {
+        if (event.name !== 'word' && !event.charLength) return;
+
+        receivedSpeechBoundary = true;
+        clearTimeout(lipSyncFallbackTimeout);
+        clearInterval(lipSyncFallbackInterval);
+        lipSyncFallbackTimeout = null;
+        lipSyncFallbackInterval = null;
+
+        const remainingText = message.slice(event.charIndex);
+        const spokenWord = event.charLength
+            ? remainingText.slice(0, event.charLength).trim()
+            : remainingText.split(/\s+/)[0];
+        if (spokenWord) animateCharacterMouth(spokenWord);
+    };
+
     utterance.onend = () => {
         isPlaying = false;
         updateVoiceButtons(false, lang, gender);
@@ -525,19 +541,41 @@ function updateVoiceButtons(isPlaying, lang, gender) {
 // ============================================================
 // 6. Cartoon Speaking Animation
 // ============================================================
-let speakingInterval = null;
+let lipSyncFallbackTimeout = null;
+let lipSyncFallbackInterval = null;
+let lipSyncTimers = [];
+let receivedSpeechBoundary = false;
+
+function clearLipSyncTimers() {
+    lipSyncTimers.forEach(timer => clearTimeout(timer));
+    lipSyncTimers = [];
+}
+
+function animateCharacterMouth(word) {
+    const mouth = document.getElementById('characterMouth');
+    if (!mouth) return;
+
+    clearLipSyncTimers();
+    const syllables = Math.max(1, Math.min(5, (word.match(/[aeiouy]+/gi) || []).length));
+    const openDuration = 95;
+    const pulseSpacing = 145;
+
+    for (let pulse = 0; pulse < syllables; pulse++) {
+        const openTimer = setTimeout(() => mouth.classList.add('mouth-open'), pulse * pulseSpacing);
+        const closeTimer = setTimeout(() => mouth.classList.remove('mouth-open'), pulse * pulseSpacing + openDuration);
+        lipSyncTimers.push(openTimer, closeTimer);
+    }
+}
 
 function startCartoonSpeaking() {
     const character = document.getElementById('cartoonCharacter');
     const eyes = document.getElementById('characterEyes');
-    const eyebrows = document.getElementById('characterEyebrows');
     const mouth = document.getElementById('characterMouth');
     const bubble = document.getElementById('speechBubble');
     const waves = document.querySelectorAll('.sound-wave');
 
     if (character) character.classList.add('speaking');
     if (eyes) eyes.classList.add('speaking');
-    if (eyebrows) eyebrows.classList.add('speaking');
     if (mouth) mouth.classList.add('speaking');
     if (bubble) bubble.classList.add('show');
 
@@ -545,48 +583,38 @@ function startCartoonSpeaking() {
         setTimeout(() => wave.classList.add('active'), index * 200);
     });
 
-    let mouthOpen = true;
-    speakingInterval = setInterval(() => {
-        if (mouth) {
-            mouthOpen = !mouthOpen;
-            if (mouthOpen) {
-                mouth.style.height = '20px';
-                mouth.style.borderRadius = '0 0 50% 50%';
-                mouth.style.transform = 'scaleX(1.2)';
-            } else {
-                mouth.style.height = '4px';
-                mouth.style.borderRadius = '50%';
-                mouth.style.transform = 'scaleX(0.8)';
-            }
-        }
-    }, 200);
+    receivedSpeechBoundary = false;
+    lipSyncFallbackTimeout = setTimeout(() => {
+        if (receivedSpeechBoundary || !mouth) return;
+        let isMouthOpen = false;
+        lipSyncFallbackInterval = setInterval(() => {
+            isMouthOpen = !isMouthOpen;
+            mouth.classList.toggle('mouth-open', isMouthOpen);
+        }, 170);
+    }, 650);
 }
 
 function stopCartoonSpeaking() {
     const character = document.getElementById('cartoonCharacter');
     const eyes = document.getElementById('characterEyes');
-    const eyebrows = document.getElementById('characterEyebrows');
     const mouth = document.getElementById('characterMouth');
     const bubble = document.getElementById('speechBubble');
     const waves = document.querySelectorAll('.sound-wave');
 
     if (character) character.classList.remove('speaking');
     if (eyes) eyes.classList.remove('speaking');
-    if (eyebrows) eyebrows.classList.remove('speaking');
     if (mouth) {
-        mouth.classList.remove('speaking');
-        mouth.style.height = '8px';
-        mouth.style.borderRadius = '50%';
-        mouth.style.transform = 'scaleX(1)';
+        mouth.classList.remove('speaking', 'mouth-open');
     }
     if (bubble) bubble.classList.remove('show');
-
     waves.forEach(wave => wave.classList.remove('active'));
 
-    if (speakingInterval) {
-        clearInterval(speakingInterval);
-        speakingInterval = null;
-    }
+    clearLipSyncTimers();
+    clearTimeout(lipSyncFallbackTimeout);
+    clearInterval(lipSyncFallbackInterval);
+    lipSyncFallbackTimeout = null;
+    lipSyncFallbackInterval = null;
+
 }
 
 // ============================================================
@@ -757,23 +785,19 @@ async function generateDrama(categoryKey, itemKey) {
                             <div class="sound-wave"></div>
                         </div>
 
-                        <div class="character-body" style="background: ${itemColor};">
-                            <div class="character-eyebrows" id="characterEyebrows">
-                                <div class="character-eyebrow"></div>
-                                <div class="character-eyebrow"></div>
-                            </div>
-
-                            <div class="character-eyes" id="characterEyes">
-                                <div class="character-eye"></div>
-                                <div class="character-eye"></div>
-                            </div>
-
-                            <div class="character-mouth" id="characterMouth"></div>
-
-                            <span class="character-icon">${itemEmoji}</span>
-
-                            <span class="character-name-tag">${characterName}</span>
-                        </div>
+                        <span class="character-icon item-category-${categoryKey} item-key-${itemKey}" role="img" aria-label="${characterName}" style="--item-color: ${itemColor};">
+                            <span class="character-limb character-arm character-arm-left" aria-hidden="true"><span class="character-hand"></span></span>
+                            <span class="character-limb character-arm character-arm-right" aria-hidden="true"><span class="character-hand"></span></span>
+                            <span class="character-limb character-leg character-leg-left" aria-hidden="true"><span class="character-foot"></span></span>
+                            <span class="character-limb character-leg character-leg-right" aria-hidden="true"><span class="character-foot"></span></span>
+                            <span class="character-item-emoji" aria-hidden="true">${itemEmoji}</span>
+                            <span class="item-face" id="characterEyes" aria-hidden="true">
+                                <span class="item-face-eye"></span>
+                                <span class="item-face-eye"></span>
+                            </span>
+                            <span class="item-speaking-mouth" id="characterMouth" aria-hidden="true"></span>
+                        </span>
+                        <span class="character-name-tag">${characterName}</span>
                     </div>
                 </div>
 
