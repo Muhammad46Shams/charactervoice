@@ -240,10 +240,215 @@ a:hover {
 }
 
 .content-card p {
-    color: #444;
-    line-height: 1.6;
-    font-size: 0.95rem;
-}
+      color: #444;
+      line-height: 1.6;
+      font-size: 0.95rem;
+  }
+
+  /* --- Skeletal Animation System --- */
+  .character-stage {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle, #fff 0%, #e0e0e0 100%);
+    border: 4px solid #333;
+    border-radius: 50%;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    overflow: hidden;
+    margin: 20px auto;
+  }
+
+  .character-base {
+    position: absolute;
+    font-size: 10rem;
+    transition: all 0.5s ease-out;
+  }
+
+  .character-eye {
+    position: absolute;
+    top: 40%;
+    left: 35%;
+    font-size: 2rem;
+    transition: all 0.3s ease;
+    filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.3));
+  }
+
+  .character-mouth {
+    position: absolute;
+    bottom: 35%;
+    left: 40%;
+    font-size: 3rem;
+    transition: all 0.2s ease-out;
+  }
+
+  /* --- Animated States --- */
+  .speaking .character-mouth {
+    animation: speak_cycle 0.2s infinite alternate;
+  }
+
+  @keyframes speak_cycle {
+    0% { transform: scaleY(1); }
+    100% { transform: scaleY(1.5); }
+  }
+
+  .blinking .character-eye {
+    animation: blink 3s infinite;
+  }
+
+  @keyframes blink {
+    0%, 90%, 100% { transform: scaleY(1); opacity: 1; }
+    95% { transform: scaleY(0.1); opacity: 0.5; }
+  }
+
+
+  /* --- Realistic Anime/Cartoon Character System --- */
+  .character-container {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle, #fff, #f0f0f0);
+    border: 3px solid #ddd;
+    border-radius: 50% 50% 40% 40%;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+  }
+
+  .character-visual {
+    font-size: 5rem;
+    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));
+  }
+
+  /* --- Dynamic Mouth Overlay System --- */
+  .mouth-overlay {
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+    z-index: 10;
+    display: none;
+  }
+
+  .mouth-human {
+    width: 40px;
+    height: 20px;
+    background-color: #800000;
+    border-radius: 50%;
+    border: 2px solid #000;
+  }
+
+  .mouth-bird {
+    width: 30px;
+    height: 25px;
+    background-color: #ffcc00;
+    clip-path: polygon(0% 50%, 100% 0%, 100% 100%, 0% 100%);
+    border: 2px solid #000;
+  }
+
+  .mouth-monster {
+    width: 50px;
+    height: 35px;
+    background-color: #333;
+    border-radius: 15%;
+    border: 3px solid #000;
+  }
+
+  .speaking .mouth-active {
+    display: block;
+    animation: speak_cycle 0.2s infinite alternate;
+  }
+
+  @keyframes speak_cycle {
+    from { transform: scaleY(0.8); opacity: 0.8; }
+    to { transform: scaleY(1.4); opacity: 1; }
+  }
+
+
+  /* --- Anime Character System --- */
+  .character-container {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    border-radius: 24px;
+    background: linear-gradient(145deg, #ffffff, #f3f3f3);
+    border: 3px solid #eee;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    max-width: 300px;
+    margin: 0 auto;
+  }
+
+  .character-visual {
+    font-size: 5rem;
+    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.15));
+    transition: all 0.3s ease;
+  }
+
+  /* --- Unique Anime Personality Animations --- */
+  .personality-hero .character-container {
+    border-color: #ff4500;
+    box-shadow: 0 0 20px rgba(255, 69, 0, 0.3);
+  }
+  .personality-hero .mouth-active {
+    animation: shake_and_stretch 0.15s infinite alternate;
+  }
+  @keyframes shake_and_stretch {
+    from { transform: scale(1.1) rotate(-2deg); }
+    to { transform: scale(1.1) rotate(2deg); }
+  }
+
+  .personality-magical .character-container {
+    border-color: #ff69b4;
+    box-shadow: 0 0 20px rgba(255, 105, 180, 0.4);
+    background: radial-gradient(circle, #fff0ff 0%, #ffffff 100%);
+  }
+  .personality-magical .mouth-active {
+    animation: pulse_soft 0.4s infinite alternate;
+  }
+  @keyframes pulse_soft {
+    from { transform: scale(1); }
+    to { transform: scale(1.15); }
+  }
+
+  .personality-rival .character-container {
+    border-color: #1a1a1a;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    background: #f0f0f0;
+  }
+  .personality-rival .mouth-active {
+    animation: sharp_cut 0.2s infinite alternate;
+  }
+  @keyframes sharp_cut {
+    from { transform: scaleX(1); }
+    to { transform: scaleX(1.2); }
+  }
+
+  .personality-stoic .character-container {
+    border-color: #4a4a4a;
+    border-style: dashed;
+    background: #f9f9f9;
+  }
+  .personality-stoic .mouth-active {
+    animation: slow_swell 0.8s infinite alternate;
+  }
+  @keyframes slow_swell {
+    from { transform: scale(1.05); }
+    to { transform: scale(1.1); }
+  }
+
+  .mouth-active {
+    display: inline-block;
+  }
+
 
 /* ============================================================
    POPULAR CHARACTERS SECTION
