@@ -4400,3 +4400,294 @@ footer small {
         filter: none;
     }
 }
+/* ============================================================
+   ILLUSTRATED CHARACTERS (characters.js)
+   Picture pickers, the talking stage character and its rig.
+   ============================================================ */
+
+.form-group select[hidden] {
+    display: none !important;
+}
+
+.picker-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #4b5660;
+    font-size: 0.76rem;
+    font-weight: 750;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.char-picker {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+    gap: 0.55rem;
+}
+
+.char-picker-items {
+    max-height: 330px;
+    overflow-y: auto;
+    padding: 3px;
+    margin: -3px;
+    scrollbar-width: thin;
+}
+
+.picker-empty {
+    grid-column: 1 / -1;
+    margin: 0 !important;
+    padding: 1.1rem;
+    border: 1.5px dashed #dfe2df;
+    border-radius: 14px;
+    color: #8a949b !important;
+    font-size: 0.86rem !important;
+    text-align: center;
+}
+
+.pick-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    min-width: 0;
+    padding: 0.45rem 0.3rem 0.5rem;
+    border: 1.5px solid #e6e3dc;
+    border-radius: 14px;
+    background: #fff;
+    color: #4b5660;
+    font: inherit;
+    font-size: 0.74rem;
+    font-weight: 650;
+    line-height: 1.2;
+    cursor: pointer;
+    transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+}
+
+.pick-card:hover {
+    transform: translateY(-2px);
+    border-color: #e7c37a;
+    box-shadow: 0 8px 18px rgba(32, 43, 54, 0.08);
+}
+
+.pick-card:focus-visible {
+    outline: 3px solid #d6a64f;
+    outline-offset: 2px;
+}
+
+.pick-card[aria-pressed="true"] {
+    border-color: #d6a64f;
+    background: #fff8e6;
+    box-shadow: 0 0 0 3px rgba(243, 201, 105, 0.35);
+    color: var(--dark-charcoal);
+}
+
+.pick-art {
+    display: block;
+    width: 100%;
+    max-width: 66px;
+}
+
+.pick-label {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.popular-card .popular-art {
+    display: block;
+    width: 84px;
+    margin: 0 auto 0.4rem;
+}
+
+/* ---------- SVG character base ---------- */
+.cv {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    --open: 0;
+}
+
+.cv .cv-v { display: none; }
+.cv[data-v="X"] .cv-v-X,
+.cv[data-v="MBP"] .cv-v-MBP,
+.cv[data-v="etc"] .cv-v-etc,
+.cv[data-v="AI"] .cv-v-AI,
+.cv[data-v="E"] .cv-v-E,
+.cv[data-v="O"] .cv-v-O,
+.cv[data-v="U"] .cv-v-U,
+.cv[data-v="L"] .cv-v-L,
+.cv[data-v="FV"] .cv-v-FV { display: inline; }
+
+/* How far the jaw / beak opens for each mouth shape */
+.cv[data-v="AI"] { --open: 1; }
+.cv[data-v="O"] { --open: 0.8; }
+.cv[data-v="E"] { --open: 0.55; }
+.cv[data-v="L"] { --open: 0.5; }
+.cv[data-v="etc"] { --open: 0.4; }
+.cv[data-v="U"] { --open: 0.35; }
+.cv[data-v="FV"] { --open: 0.2; }
+
+.cv-mouth {
+    transform: translateY(calc(var(--open) * 1.6px));
+    transition: transform 70ms ease-out;
+}
+
+.cv-jaw {
+    transform: translateY(calc(var(--open) * 7px));
+    transition: transform 70ms ease-out;
+}
+
+/* Eyes: blink + glance */
+.cv-eye {
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: transform 70ms ease;
+}
+.cv.cv-blink .cv-eye { transform: scaleY(0.1); }
+
+.cv-look {
+    transform: translate(var(--lx, 0px), var(--ly, 0px));
+    transition: transform 0.28s ease;
+}
+
+/* Brows: mood + emphasis */
+.cv-brows {
+    transition: transform 0.15s ease;
+}
+.cv.cv-emph .cv-brows { transform: translateY(-4px); }
+
+.cv-brow {
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: transform 0.25s ease;
+}
+.cv-mood-happy .cv-brows { transform: translateY(-1.5px); }
+.cv-mood-angry .cv-brow-l { transform: translateY(3px) rotate(16deg); }
+.cv-mood-angry .cv-brow-r { transform: translateY(3px) rotate(-16deg); }
+.cv-mood-worried .cv-brow-l { transform: rotate(-14deg); }
+.cv-mood-worried .cv-brow-r { transform: rotate(14deg); }
+.cv-mood-sly .cv-brow-l { transform: translateY(2px) rotate(8deg); }
+.cv-mood-sly .cv-brow-r { transform: translateY(-4px) rotate(-6deg); }
+
+/* Idle life */
+.cv-rig {
+    transform-origin: 100px 186px;
+    animation: cvBreathe 3.4s ease-in-out infinite;
+}
+.cv-shadow { animation: cvShadow 3.4s ease-in-out infinite; }
+.cv-tail { animation: cvTail 2.6s ease-in-out infinite; }
+.cv-flame { animation: cvFlame 0.6s ease-in-out infinite alternate; }
+.cv-steam { animation: cvSteam 2.4s ease-in-out infinite; }
+.cv-steam:nth-of-type(2) { animation-delay: 0.8s; }
+
+@keyframes cvBreathe {
+    0%, 100% { transform: scale(1, 1); }
+    50% { transform: scale(1.012, 1.018); }
+}
+@keyframes cvShadow {
+    0%, 100% { transform: scaleX(1); }
+    50% { transform: scaleX(0.96); }
+}
+@keyframes cvTail {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(-10deg); }
+}
+@keyframes cvFlame {
+    from { transform: scale(1, 1) rotate(-4deg); }
+    to { transform: scale(0.9, 1.12) rotate(4deg); }
+}
+@keyframes cvSteam {
+    0% { opacity: 0; transform: translateY(6px); }
+    40% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(-8px); }
+}
+
+/* Talking */
+.cv.is-speaking .cv-rig { animation: cvTalkSway 1.8s ease-in-out infinite; }
+.cv.is-speaking .cv-head { animation: cvNod 0.9s ease-in-out infinite alternate; }
+.cv.is-speaking .cv-arm-l { animation: cvGestureL 1.3s ease-in-out infinite; }
+.cv.is-speaking .cv-arm-r { animation: cvGestureR 1.3s ease-in-out 0.45s infinite; }
+.cv.is-speaking .cv-tail { animation-duration: 0.9s; }
+
+@keyframes cvTalkSway {
+    0%, 100% { transform: rotate(-1.2deg) translateY(0); }
+    25% { transform: rotate(0deg) translateY(-3px); }
+    50% { transform: rotate(1.2deg) translateY(0); }
+    75% { transform: rotate(0deg) translateY(-2px); }
+}
+@keyframes cvNod {
+    from { transform: rotate(-2.5deg); }
+    to { transform: rotate(2.5deg) translateY(-1px); }
+}
+@keyframes cvGestureL {
+    0%, 100% { transform: rotate(0deg); }
+    40% { transform: rotate(26deg); }
+    70% { transform: rotate(8deg); }
+}
+@keyframes cvGestureR {
+    0%, 100% { transform: rotate(0deg); }
+    40% { transform: rotate(-26deg); }
+    70% { transform: rotate(-8deg); }
+}
+
+/* Picker cards stay still until hovered, then smile and hop */
+.cv-size-card .cv-rig,
+.cv-size-card .cv-shadow,
+.cv-size-card .cv-tail,
+.cv-size-card .cv-steam,
+.cv-size-card .cv-flame { animation: none; }
+
+.pick-card:hover .cv-size-card .cv-rig,
+.popular-card:hover .cv-size-card .cv-rig { animation: cvHop 0.5s ease; }
+.pick-card:hover .cv .cv-v-X,
+.popular-card:hover .cv .cv-v-X { display: none; }
+.pick-card:hover .cv .cv-v-E,
+.popular-card:hover .cv .cv-v-E { display: inline; }
+.pick-card:hover .cv,
+.popular-card:hover .cv { --open: 0.55; }
+
+@keyframes cvHop {
+    0%, 100% { transform: translateY(0) scale(1); }
+    35% { transform: translateY(-8px) scale(1.02, 0.98); }
+    60% { transform: translateY(0) scale(1.04, 0.96); }
+}
+
+/* ---------- Stage (result area) ---------- */
+.cv-stage {
+    position: relative;
+    z-index: 1;
+    width: min(250px, 68vw);
+    margin: 0 auto;
+    filter: drop-shadow(0 12px 14px color-mix(in srgb, var(--item-color, #f3c969) 28%, rgba(32, 43, 54, 0.12)));
+    animation: cvReveal 650ms cubic-bezier(0.2, 0.8, 0.25, 1.3) both;
+}
+
+@keyframes cvReveal {
+    0% { opacity: 0; transform: translateY(18px) scale(0.6); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* The SVG rig animates itself, so drop the old whole-container bounce. */
+.cartoon-character.cv-host.speaking {
+    animation: none;
+}
+
+@media (max-width: 480px) {
+    .char-picker {
+        grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+        gap: 0.45rem;
+    }
+    .pick-art { max-width: 56px; }
+    .pick-card { font-size: 0.7rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cv-rig, .cv-shadow, .cv-tail, .cv-flame, .cv-steam,
+    .cv.is-speaking .cv-rig, .cv.is-speaking .cv-head,
+    .cv.is-speaking .cv-arm-l, .cv.is-speaking .cv-arm-r,
+    .pick-card:hover .cv-size-card .cv-rig, .popular-card:hover .cv-size-card .cv-rig,
+    .cv-stage { animation: none; }
+    .pick-card:hover { transform: none; }
+}

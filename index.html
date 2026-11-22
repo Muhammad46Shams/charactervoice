@@ -105,15 +105,17 @@
 
                     <form id="generatorForm">
                         <div class="form-group">
-                            <label for="categorySelect">Category</label>
-                            <select id="categorySelect" required>
+                            <span class="picker-label" id="categoryPickerLabel">Category</span>
+                            <div class="char-picker char-picker-categories" id="categoryPicker" role="group" aria-labelledby="categoryPickerLabel"></div>
+                            <select id="categorySelect" hidden aria-hidden="true" tabindex="-1">
                                 <option value="">— Select —</option>
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="itemSelect">Item</label>
-                            <select id="itemSelect" required>
+                            <span class="picker-label" id="itemPickerLabel">Character</span>
+                            <div class="char-picker char-picker-items" id="itemPicker" role="group" aria-labelledby="itemPickerLabel"></div>
+                            <select id="itemSelect" hidden aria-hidden="true" tabindex="-1">
                                 <option value="">— Choose a category first —</option>
                             </select>
                         </div>
@@ -448,6 +450,7 @@
     </footer>
 
     <!-- JavaScript -->
+    <script src="characters.js"></script>
     <script src="script.js"></script>
     
     <!-- ============================================================

@@ -11,7 +11,7 @@ const dogApiUrl = 'https://dog.ceo/api/breeds/image/random';
 const categoryMap = {
     // ----- ANIMALS -----
     animals: {
-        label: '🐾 Animals',
+        label: 'Animals',
         colors: ['#FF6B6B', '#FFD93D', '#6BCB77', '#4D96FF', '#FF9FF3', '#FF9F43'],
         apiFetch: async (item) => {
             if (item === 'dog') {
@@ -46,7 +46,7 @@ const categoryMap = {
     
     // ----- FRUITS -----
     fruits: {
-        label: '🍎 Fruits',
+        label: 'Fruits',
         colors: ['#FF6B6B', '#FFD93D', '#6BCB77', '#FF9F43', '#FF9FF3', '#4D96FF'],
         apiFetch: async (item) => { return {}; },
         items: {
@@ -67,7 +67,7 @@ const categoryMap = {
     
     // ----- FOOD -----
     food: {
-        label: '🍕 Food',
+        label: 'Food',
         colors: ['#FF6B6B', '#FFD93D', '#6BCB77', '#D4A574', '#FF9F43', '#FF9FF3'],
         apiFetch: async (item) => { return {}; },
         items: {
@@ -88,7 +88,7 @@ const categoryMap = {
     
     // ----- VEGETABLES -----
     vegetables: {
-        label: '🥬 Vegetables',
+        label: 'Vegetables',
         colors: ['#6BCB77', '#FF6B6B', '#FFD93D', '#4D96FF', '#FF9F43', '#FF9FF3'],
         apiFetch: async (item) => { return {}; },
         items: {
@@ -109,7 +109,7 @@ const categoryMap = {
     
     // ----- DRINKS -----
     drinks: {
-        label: '☕ Drinks',
+        label: 'Drinks',
         colors: ['#4D96FF', '#FFD93D', '#FF6B6B', '#FF9FF3', '#6BCB77', '#D4A574'],
         apiFetch: async (item) => { return {}; },
         items: {
@@ -128,7 +128,7 @@ const categoryMap = {
     
     // ----- DESSERTS -----
     desserts: {
-        label: '🍰 Desserts',
+        label: 'Desserts',
         colors: ['#FF9FF3', '#FFD93D', '#FF6B6B', '#6BCB77', '#FF9F43', '#4D96FF'],
         apiFetch: async (item) => { return {}; },
         items: {
@@ -146,7 +146,7 @@ const categoryMap = {
     
     // ----- BIRDS -----
     birds: {
-        label: '🐦 Birds',
+        label: 'Birds',
         colors: ['#4D96FF', '#FFD93D', '#FF6B6B', '#6BCB77', '#FF9F43', '#FF9FF3'],
         apiFetch: async (item) => { return {}; },
         items: {
@@ -166,7 +166,7 @@ const categoryMap = {
     
     // ----- SEA CREATURES -----
     sea: {
-        label: '🐠 Sea Creatures',
+        label: 'Sea Creatures',
         colors: ['#4D96FF', '#6BCB77', '#FFD93D', '#FF6B6B', '#FF9F43', '#FF9FF3'],
         apiFetch: async (item) => { return {}; },
         items: {
@@ -297,6 +297,8 @@ const resultContent = document.getElementById('resultContent');
 const generateBtn = document.getElementById('generateBtn');
 const randomBtn = document.getElementById('randomBtn');
 const languageSelect = document.getElementById('languageSelect');
+const categoryPicker = document.getElementById('categoryPicker');
+const itemPicker = document.getElementById('itemPicker');
 
 // ============================================================
 // 5. IMPROVED Voice Selection System
@@ -455,16 +457,17 @@ function speakCharacter(name, quote, joke, lang, gender) {
     currentUtterance = utterance;
     isPlaying = true;
     updateVoiceButtons(true, lang, gender);
-    startCartoonSpeaking();
+    startCartoonSpeaking(message, utterance.rate);
 
     utterance.onboundary = (event) => {
         if (event.name !== 'word' && !event.charLength) return;
 
-        receivedSpeechBoundary = true;
-        clearTimeout(lipSyncFallbackTimeout);
-        clearInterval(lipSyncFallbackInterval);
-        lipSyncFallbackTimeout = null;
-        lipSyncFallbackInterval = null;
+        if (!receivedSpeechBoundary) {
+            receivedSpeechBoundary = true;
+            clearTimeout(lipSyncFallbackTimeout);
+            lipSyncFallbackTimeout = null;
+            if (activeRig) activeRig.stopText();
+        }
 
         const remainingText = message.slice(event.charIndex);
         const spokenWord = event.charLength
@@ -539,111 +542,150 @@ function updateVoiceButtons(isPlaying, lang, gender) {
 }
 
 // ============================================================
-// 6. Cartoon Speaking Animation
+// 6. Cartoon Speaking Animation (illustrated rig from characters.js)
 // ============================================================
 let lipSyncFallbackTimeout = null;
-let lipSyncFallbackInterval = null;
-let lipSyncTimers = [];
 let receivedSpeechBoundary = false;
-
-function clearLipSyncTimers() {
-    lipSyncTimers.forEach(timer => clearTimeout(timer));
-    lipSyncTimers = [];
-}
+let activeRig = null;
+let currentSpeechRate = 1;
 
 function animateCharacterMouth(word) {
-    const mouth = document.getElementById('characterMouth');
-    if (!mouth) return;
-
-    clearLipSyncTimers();
-    const syllables = Math.max(1, Math.min(5, (word.match(/[aeiouy]+/gi) || []).length));
-    const openDuration = 95;
-    const pulseSpacing = 145;
-
-    for (let pulse = 0; pulse < syllables; pulse++) {
-        const openTimer = setTimeout(() => mouth.classList.add('mouth-open'), pulse * pulseSpacing);
-        const closeTimer = setTimeout(() => mouth.classList.remove('mouth-open'), pulse * pulseSpacing + openDuration);
-        lipSyncTimers.push(openTimer, closeTimer);
-    }
+    if (activeRig) activeRig.speakWord(word, currentSpeechRate);
 }
 
-function startCartoonSpeaking() {
+function startCartoonSpeaking(message, rate) {
     const character = document.getElementById('cartoonCharacter');
-    const eyes = document.getElementById('characterEyes');
-    const mouth = document.getElementById('characterMouth');
     const bubble = document.getElementById('speechBubble');
     const waves = document.querySelectorAll('.sound-wave');
 
+    currentSpeechRate = rate || 1;
     if (character) character.classList.add('speaking');
-    if (eyes) eyes.classList.add('speaking');
-    if (mouth) mouth.classList.add('speaking');
     if (bubble) bubble.classList.add('show');
+    if (activeRig) activeRig.start();
 
     waves.forEach((wave, index) => {
         setTimeout(() => wave.classList.add('active'), index * 200);
     });
 
+    // Some browsers/voices never fire word-boundary events: estimate the timing from the text instead.
     receivedSpeechBoundary = false;
+    clearTimeout(lipSyncFallbackTimeout);
     lipSyncFallbackTimeout = setTimeout(() => {
-        if (receivedSpeechBoundary || !mouth) return;
-        let isMouthOpen = false;
-        lipSyncFallbackInterval = setInterval(() => {
-            isMouthOpen = !isMouthOpen;
-            mouth.classList.toggle('mouth-open', isMouthOpen);
-        }, 170);
+        if (receivedSpeechBoundary || !activeRig) return;
+        activeRig.playText(message || '', currentSpeechRate);
     }, 650);
 }
 
 function stopCartoonSpeaking() {
     const character = document.getElementById('cartoonCharacter');
-    const eyes = document.getElementById('characterEyes');
-    const mouth = document.getElementById('characterMouth');
     const bubble = document.getElementById('speechBubble');
     const waves = document.querySelectorAll('.sound-wave');
 
     if (character) character.classList.remove('speaking');
-    if (eyes) eyes.classList.remove('speaking');
-    if (mouth) {
-        mouth.classList.remove('speaking', 'mouth-open');
-    }
     if (bubble) bubble.classList.remove('show');
     waves.forEach(wave => wave.classList.remove('active'));
+    if (activeRig) activeRig.stop();
 
-    clearLipSyncTimers();
     clearTimeout(lipSyncFallbackTimeout);
-    clearInterval(lipSyncFallbackInterval);
     lipSyncFallbackTimeout = null;
-    lipSyncFallbackInterval = null;
-
 }
 
 // ============================================================
-// 7. Populate Dropdowns
+// 7. Populate Pickers (illustrated cards backed by the hidden selects)
 // ============================================================
+function renderArt(categoryKey, itemKey, size) {
+    if (!window.CharacterArt) return '';
+    const item = categoryMap[categoryKey]?.items[itemKey];
+    return window.CharacterArt.render(categoryKey, itemKey, { size, color: item?.color });
+}
+
+function createPickCard(value, label, art) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'pick-card';
+    button.dataset.value = value;
+    button.setAttribute('aria-pressed', 'false');
+    button.innerHTML = `<span class="pick-art">${art}</span><span class="pick-label"></span>`;
+    button.querySelector('.pick-label').textContent = label;
+    return button;
+}
+
+function markPicked(picker, value) {
+    if (!picker) return;
+    picker.querySelectorAll('.pick-card').forEach(card => {
+        card.setAttribute('aria-pressed', String(card.dataset.value === value));
+    });
+}
+
 function populateCategories() {
     categorySelect.innerHTML = '<option value="">— Select —</option>';
+    if (categoryPicker) categoryPicker.innerHTML = '';
     for (const [key, value] of Object.entries(categoryMap)) {
         const option = document.createElement('option');
         option.value = key;
         option.textContent = value.label;
         categorySelect.appendChild(option);
+
+        if (categoryPicker) {
+            const hero = window.CharacterArt?.heroFor(key) || Object.keys(value.items)[0];
+            categoryPicker.appendChild(createPickCard(key, value.label, renderArt(key, hero, 'card')));
+        }
     }
 }
-populateCategories();
 
-categorySelect.addEventListener('change', function() {
-    const categoryKey = this.value;
+function populateItems(categoryKey) {
     itemSelect.innerHTML = '<option value="">— Choose an item —</option>';
-    if (!categoryKey || !categoryMap[categoryKey]) return;
+    if (itemPicker) itemPicker.innerHTML = '';
+    if (!categoryKey || !categoryMap[categoryKey]) {
+        if (itemPicker) itemPicker.innerHTML = '<p class="picker-empty">Choose a category first</p>';
+        return;
+    }
 
     const items = categoryMap[categoryKey].items;
     for (const [itemKey, itemValue] of Object.entries(items)) {
         const option = document.createElement('option');
         option.value = itemKey;
-        option.textContent = `${itemValue.emoji} ${itemValue.label}`;
+        option.textContent = itemValue.label;
         itemSelect.appendChild(option);
+
+        if (itemPicker) itemPicker.appendChild(createPickCard(itemKey, itemValue.label, renderArt(categoryKey, itemKey, 'card')));
     }
+}
+
+function syncPickers() {
+    markPicked(categoryPicker, categorySelect.value);
+    markPicked(itemPicker, itemSelect.value);
+}
+
+populateCategories();
+populateItems('');
+
+categorySelect.addEventListener('change', function() {
+    populateItems(this.value);
+    syncPickers();
 });
+
+if (categoryPicker) {
+    categoryPicker.addEventListener('click', (e) => {
+        const card = e.target.closest('.pick-card');
+        if (!card) return;
+        if (categorySelect.value !== card.dataset.value) {
+            categorySelect.value = card.dataset.value;
+            categorySelect.dispatchEvent(new Event('change'));
+        }
+        syncPickers();
+    });
+}
+
+if (itemPicker) {
+    itemPicker.addEventListener('click', (e) => {
+        const card = e.target.closest('.pick-card');
+        if (!card) return;
+        itemSelect.value = card.dataset.value;
+        itemSelect.dispatchEvent(new Event('change'));
+        syncPickers();
+    });
+}
 
 // ============================================================
 // 8. Helper Functions
@@ -704,10 +746,21 @@ async function generateDrama(categoryKey, itemKey) {
     const category = categoryMap[categoryKey];
     const item = category.items[itemKey];
     const itemLabel = item.label;
-    const itemEmoji = item.emoji;
     const itemColor = item.color || getRandomColor(category.colors);
 
     stopVoice();
+    if (activeRig) {
+        activeRig.destroy();
+        activeRig = null;
+    }
+
+    // Keep the picture pickers in step with random / popular selections.
+    if (categorySelect.value !== categoryKey) {
+        categorySelect.value = categoryKey;
+        populateItems(categoryKey);
+    }
+    itemSelect.value = itemKey;
+    syncPickers();
 
     generateBtn.disabled = true;
     randomBtn.disabled = true;
@@ -757,6 +810,14 @@ async function generateDrama(categoryKey, itemKey) {
         ];
         const adjective = adjectives[Math.floor(Math.random() * adjectives.length)];
         const characterName = `${adjective} ${itemLabel}`;
+        const characterArt = window.CharacterArt
+            ? window.CharacterArt.render(categoryKey, itemKey, {
+                mood: window.CharacterArt.moodFor(adjective),
+                size: 'stage',
+                label: characterName,
+                color: itemColor,
+            })
+            : '';
 
         lastCharacterName = characterName;
         lastQuoteText = quoteText;
@@ -778,25 +839,16 @@ async function generateDrama(categoryKey, itemKey) {
                 </div>
 
                 <div class="cartoon-character-container">
-                    <div class="cartoon-character" id="cartoonCharacter">
+                    <div class="cartoon-character cv-host" id="cartoonCharacter">
                         <div class="sound-waves">
                             <div class="sound-wave"></div>
                             <div class="sound-wave"></div>
                             <div class="sound-wave"></div>
                         </div>
 
-                        <span class="character-icon item-category-${categoryKey} item-key-${itemKey}" role="img" aria-label="${characterName}" style="--item-color: ${itemColor};">
-                            <span class="character-limb character-arm character-arm-left" aria-hidden="true"><span class="character-hand"></span></span>
-                            <span class="character-limb character-arm character-arm-right" aria-hidden="true"><span class="character-hand"></span></span>
-                            <span class="character-limb character-leg character-leg-left" aria-hidden="true"><span class="character-foot"></span></span>
-                            <span class="character-limb character-leg character-leg-right" aria-hidden="true"><span class="character-foot"></span></span>
-                            <span class="character-item-emoji" aria-hidden="true">${itemEmoji}</span>
-                            <span class="item-face" id="characterEyes" aria-hidden="true">
-                                <span class="item-face-eye"></span>
-                                <span class="item-face-eye"></span>
-                            </span>
-                            <span class="item-speaking-mouth" id="characterMouth" aria-hidden="true"></span>
-                        </span>
+                        <div class="cv-stage" style="--item-color: ${itemColor};">
+                            ${characterArt}
+                        </div>
                         <span class="character-name-tag">${characterName}</span>
                     </div>
                 </div>
@@ -847,6 +899,10 @@ async function generateDrama(categoryKey, itemKey) {
                 </div>
             </div>
         `;
+
+        if (window.CharacterArt) {
+            activeRig = window.CharacterArt.createRig(resultContent.querySelector('.cv-stage svg.cv'));
+        }
 
         // Attach event listeners to the share buttons
         document.querySelectorAll('.share-buttons button[data-share]').forEach(btn => {
@@ -1104,23 +1160,31 @@ function generatePopularCharacters() {
     if (!grid) return;
     
     const popularItems = [
-        { emoji: '🍌', name: 'Grumpy Banana', category: 'Fruits' },
-        { emoji: '🐶', name: 'Dramatic Dog', category: 'Animals' },
-        { emoji: '🍕', name: 'Judgmental Pizza', category: 'Food' },
-        { emoji: '🥕', name: 'Sassy Carrot', category: 'Vegetables' },
-        { emoji: '🦊', name: 'Mysterious Fox', category: 'Animals' },
-        { emoji: '🍓', name: 'Overdramatic Strawberry', category: 'Fruits' },
-        { emoji: '🐱', name: 'Moody Cat', category: 'Animals' },
-        { emoji: '🍦', name: 'Chill Ice Cream', category: 'Desserts' },
+        { cat: 'fruits', item: 'banana', name: 'Grumpy Banana', category: 'Fruits' },
+        { cat: 'animals', item: 'dog', name: 'Dramatic Dog', category: 'Animals' },
+        { cat: 'food', item: 'pizza', name: 'Judgmental Pizza', category: 'Food' },
+        { cat: 'vegetables', item: 'carrot', name: 'Sassy Carrot', category: 'Vegetables' },
+        { cat: 'animals', item: 'fox', name: 'Mysterious Fox', category: 'Animals' },
+        { cat: 'fruits', item: 'strawberry', name: 'Overdramatic Strawberry', category: 'Fruits' },
+        { cat: 'animals', item: 'cat', name: 'Moody Cat', category: 'Animals' },
+        { cat: 'desserts', item: 'ice_cream', name: 'Chill Ice Cream', category: 'Desserts' },
     ];
-    
-    grid.innerHTML = popularItems.map(item => `
+
+    grid.innerHTML = popularItems.map(item => {
+        const art = window.CharacterArt
+            ? window.CharacterArt.render(item.cat, item.item, {
+                size: 'card',
+                mood: window.CharacterArt.moodFor(item.name.split(' ')[0]),
+            })
+            : '';
+        return `
         <div class="popular-card" onclick="generateFromPopular('${item.name}', '${item.category}')">
-            <span class="emoji">${item.emoji}</span>
+            <span class="popular-art">${art}</span>
             <span class="name">${item.name}</span>
             <span class="category">${item.category}</span>
         </div>
-    `).join('');
+    `;
+    }).join('');
 }
 
 window.generateFromPopular = function(name, category) {
