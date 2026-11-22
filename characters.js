@@ -1,10 +1,10 @@
 /* ============================================================
-   Character Voice – illustrated SVG characters + talking face rig
+   Character Voice \u2013 illustrated SVG characters + talking face rig
    ------------------------------------------------------------
    window.CharacterArt.render(categoryKey, itemKey, { mood, size, label })
-       → SVG markup string for one character (viewBox 0 0 200 200).
+       \u2192 SVG markup string for one character (viewBox 0 0 200 200).
    window.CharacterArt.createRig(svgElement)
-       → controller that blinks, glances, and lip-syncs the character.
+       \u2192 controller that blinks, glances, and lip-syncs the character.
    Every character shares the same face rig (eyes, brows, mouth), so
    lip-sync and moods work identically for all of them. Items without
    a drawing fall back to a generic round character in the item colour.
@@ -57,7 +57,7 @@
 
     const L = (d, w, color, op) =>
         `<path d="${d}" fill="none" stroke="${color || OL}" stroke-width="${w || 3}" stroke-linecap="round" stroke-linejoin="round"${op != null ? ` opacity="${op}"` : ''}/>`;
-    // Outlined tube (stems, tails, tentacles, straws…)
+    // Outlined tube (stems, tails, tentacles, straws...)
     const tube = (d, w, fill) => L(d, w + SW * 2, OL) + L(d, w, fill);
     const shine = (cx, cy, rx, ry, rot) =>
         `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="#fff" opacity=".55"${rot ? ` transform="rotate(${rot} ${cx} ${cy})"` : ''}/>`;
@@ -271,7 +271,7 @@
     }
 
     // ============================================================
-    // ARTWORK – one function per item, receives F(faceOptions)
+    // ARTWORK - one function per item, receives F(faceOptions)
     // ============================================================
     const ART = {
         // ---------------- ANIMALS ----------------
@@ -1024,7 +1024,7 @@
                     body: R(56, 34, 88, 74, 6, '#6b3a1f') + g('M56 58 L144 58') + g('M56 82 L144 82') + g('M85 34 L85 106') + g('M115 34 L115 106') +
                         R(52, 104, 96, 72, 6, '#c0392b') +
                         P('M52 104 L60 96 L68 104 L76 96 L84 104 L92 96 L100 104 L108 96 L116 104 L124 96 L132 104 L140 96 L148 104Z', '#e8c547', { sw: 2 }) +
-                        `<text x="100" y="148" text-anchor="middle" font-family="Lobster, cursive" font-size="20" fill="#fff">Choco</text>`,
+                        `<text x="100" y="148" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="19" fill="#fff">Choco</text>`,
                     face: F({ x: 100, y: 66, gap: 16, my: 22 }),
                     neck: '100px 104px',
                 });
@@ -1374,6 +1374,43 @@
                 });
             },
         },
+
+        // ---------------- VOICE STYLES (picker + result badge) ----------------
+        voices: {
+            kid(F) {
+                const skin = '#ffd3b4', hair = '#7a4a2a', grape = '#6c47ff';
+                return compose({
+                    arms: arms({ y: 152, x: 34, len: 18, drop: 12, hand: skin }),
+                    body: P('M60 182 Q58 142 100 138 Q142 142 140 182Z', '#ffc83d') +
+                        P('M100 152 L104 161 L114 161 L106 167 L109 176 L100 170 L91 176 L94 167 L86 161 L96 161Z', '#fff', { sw: 1.8, flat: true }),
+                    head: C2(52, 100, 9, skin) + C(100, 96, 48, skin) +
+                        P('M56 86 Q70 98 82 86 Q92 98 104 86 Q116 98 128 86 Q138 96 144 84 Q100 70 56 86Z', hair) +
+                        P('M52 84 Q54 40 100 38 Q146 40 148 84 Q100 66 52 84Z', grape) +
+                        L('M60 70 Q100 56 140 70', 4, '#ff5d9e') +
+                        L('M100 38 L100 28', 3, OL) +
+                        `<g class="cv-prop" style="transform-origin:100px 26px">${E(87, 25, 13, 4.5, '#ff5d9e', { sw: 2 })}${E(113, 25, 13, 4.5, '#ffc83d', { sw: 2 })}</g>` +
+                        C(100, 26, 4, '#1fc49c', { sw: 2 }),
+                    face: F({ x: 100, y: 104, gap: 16, er: 1.05, my: 22, ms: 0.95 }),
+                    neck: '100px 140px',
+                });
+            },
+            teen(F) {
+                const skin = '#f1c09a', hair = '#3b2a4a', hoodie = '#6c47ff';
+                return compose({
+                    arms: arms({ y: 156, x: 40, len: 16, drop: 12, color: '#5132d6', w: 7, hand: skin }),
+                    body: P('M54 184 Q52 142 100 136 Q148 142 146 184Z', hoodie) +
+                        P('M72 140 Q100 162 128 140 Q122 152 100 156 Q78 152 72 140Z', '#5132d6', { sw: 2.4 }) +
+                        L('M92 152 L90 170', 2, '#fff') + L('M108 152 L110 170', 2, '#fff') +
+                        dot(90, 171, 2.4, '#fff') + dot(110, 171, 2.4, '#fff'),
+                    head: R(90, 122, 20, 18, 6, skin, { sw: 2.4 }) + C2(56, 98, 8, skin) + E(100, 94, 44, 46, skin) +
+                        P('M56 92 Q50 50 92 44 Q136 40 148 78 Q150 90 145 98 Q140 74 118 72 Q96 78 74 68 Q66 82 58 98Z', hair) +
+                        tube('M52 96 Q48 40 100 38 Q152 40 148 96', 6, '#1fc49c') +
+                        R(40, 84, 16, 26, 7, '#ff5d9e') + R(144, 84, 16, 26, 7, '#ff5d9e'),
+                    face: F({ x: 100, y: 100, gap: 15, iris: '#4a3a2a', my: 24, ms: 0.95 }),
+                    neck: '100px 136px',
+                });
+            },
+        },
     };
 
     // Generic character for any item that has no bespoke drawing yet.
@@ -1432,7 +1469,7 @@
     }
 
     // ============================================================
-    // LIP-SYNC – text → mouth shapes (Preston Blair-style visemes)
+    // LIP-SYNC - text -> mouth shapes (Preston Blair-style visemes)
     // ============================================================
     const LETTER_VISEME = {
         a: 'AI', i: 'AI', e: 'E', y: 'E', o: 'O', u: 'U', w: 'U', q: 'U',
@@ -1440,17 +1477,17 @@
         l: 'L', t: 'L', d: 'L', n: 'L', h: null,
     };
     const CYCLE = ['AI', 'etc', 'O', 'E', 'MBP', 'AI', 'U', 'E', 'L'];
-    const CJK = /[぀-ヿ㐀-鿿가-힯]/;
+    const CJK = /[\u3040-\u30ff\u3400-\u9fff\uac00-\ud7af]/;
 
     function wordToVisemes(word) {
         const raw = String(word || '').toLowerCase();
-        const w = raw.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z]/g, '');
+        const w = raw.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z]/g, '');
         const seq = [];
         const push = (v) => { if (v && seq[seq.length - 1] !== v) seq.push(v); };
 
         if (!w) {
             // Non-Latin scripts: approximate syllables from character count.
-            const chars = Array.from(raw.replace(/[\s.,!?;:'"“”‘’()\-…。、！？]/g, ''));
+            const chars = Array.from(raw.replace(/[\s.,!?;:'"\u201c\u201d\u2018\u2019()\-\u2026\u3002\u3001\uff01\uff1f]/g, ''));
             if (!chars.length) return ['MBP'];
             const n = Math.max(1, Math.round(chars.length * (CJK.test(raw) ? 1 : 0.5)));
             for (let i = 0; i < n; i++) {

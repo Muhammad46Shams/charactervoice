@@ -2,8 +2,125 @@
 // 1. API Configuration
 // ============================================================
 const jokeApiUrl = 'https://v2.jokeapi.dev/joke/Any?type=single&safe-mode';
-const quoteApiUrl = 'https://quotable-hub.vercel.app/quotes/random?limit=1';
 const dogApiUrl = 'https://dog.ceo/api/breeds/image/random';
+
+// Public address of the site, used in share links. Update this if you move to a custom domain.
+const SITE_URL = 'https://character-voice.netlify.app';
+
+// ============================================================
+// 1b. Original character lines
+// Each generated character says one of these, chosen from its mood
+// (from the adjective) plus lines written for its category.
+// {name} = full character name, {item} = item name in lower case.
+// ============================================================
+const MOOD_LINES = {
+    angry: [
+        'Nobody asked {name} before putting me on the menu. Nobody.',
+        "I've worked hard all day and not one person said thank you.",
+        "Do I look like I'm in the mood? Don't answer that.",
+        "If you're going to stare, at least compliment the shine.",
+        'I was here first. Write that down.',
+        'Wake me when something important happens. Like me.',
+        'I have opinions, and every single one of them is correct.',
+        "You call that a compliment? I've heard warmer words from a fridge.",
+    ],
+    worried: [
+        "What if everyone finds out I'm just a little bit ordinary?",
+        "I can't do this. The lighting is all wrong for {name}.",
+        'Somebody hold me. Carefully. I bruise.',
+        'This is the most important moment of my life. Again.',
+        'I said I was fine. I am not fine. {name} is in crisis.',
+        "Every time someone sighs, I assume it's about me.",
+        'Oh no. Oh no no no. Is that a camera?',
+        'I had a whole speech prepared and then I saw you.',
+    ],
+    sly: [
+        'Oh, you thought I was ordinary? Adorable.',
+        "I know things. Secret {item} things. You wouldn't understand.",
+        "Sure, call me {name}. Everyone else calls me 'icon'.",
+        "I'm not saying I'm the best. I'm just saying nobody else came close.",
+        "Relax. I've got a plan. It's mostly about me.",
+        'Every room I walk into gets ten percent more interesting.',
+        'Did you just call me a snack? Bold of you.',
+        "Secrets? Me? I'm an open book. Mostly.",
+    ],
+    happy: [
+        "Hi! I'm {name} and honestly, today is amazing!",
+        'Everything is better when {name} shows up. Science probably agrees.',
+        'I woke up and chose sparkle.',
+        "Hello, friend! Want to hear my favourite song? It's about me.",
+        "Life's short. Be the {item} you want to see in the world.",
+        "I'm having the best day, and it's only been eleven seconds!",
+        "Spread joy, not crumbs. Unless they're happy crumbs.",
+        "Give me a stage and I'll give you a show!",
+    ],
+};
+
+const CATEGORY_LINES = {
+    animals: [
+        "I'd shake your hand, but these are paws, and paws have standards.",
+        "I nap for a living and I'm brilliant at it.",
+        'Yes, I can hear the snack bag from three rooms away.',
+        'Tail wags are earned, not given.',
+        'You call it zoomies. I call it cardio.',
+    ],
+    fruits: [
+        "I'm one of your five a day, so show some respect.",
+        "Ripe? I prefer 'fully self-actualised'.",
+        'Peel me? How about you ask nicely first.',
+        'Sweet on the outside, sweeter on the inside.',
+        "I didn't fall far from the tree. I'm just dramatic about it.",
+    ],
+    food: [
+        'Hot, fresh and absolutely full of myself.',
+        'I was made with love. And a lot of cheese.',
+        "Table for one? Perfect. I'm the main course.",
+        'Leftovers? Never heard of them.',
+        "Please don't put me in the microwave. I have feelings.",
+    ],
+    vegetables: [
+        "I'm the healthy choice, and I'm tired of being picked last.",
+        'Eat your greens? I AM the greens.',
+        'Grown in the garden, raised by the sunshine.',
+        'Roasted, steamed or raw, I still look fabulous.',
+        'Every dinner plate deserves a hero.',
+    ],
+    drinks: [
+        'Stay hydrated. Stay fabulous. Stay away from my straw.',
+        "I'm the reason everyone gets through the afternoon.",
+        "Shaken, stirred or poured, I'm still the star.",
+        'Sip slowly. Greatness takes time.',
+        "Ice? Please. I'm already cool.",
+    ],
+    desserts: [
+        'Life is uncertain. Eat me first.',
+        "I'm what happens when sugar gets a personality.",
+        "Calories don't count if you laugh at my jokes.",
+        'Sprinkles are just my way of saying hello.',
+        "Save room for me. I'm worth it.",
+    ],
+    birds: [
+        'I woke up at five to sing and nobody clapped.',
+        'Personal space? I have the whole sky.',
+        'Bird brain? I navigate continents, thanks.',
+        "Feathers this fabulous don't happen by accident.",
+        "I'll tweet about this later.",
+    ],
+    sea: [
+        'Just keep swimming? I prefer making an entrance.',
+        "Life's better down where it's wetter.",
+        "I'm not shellfish, I just like my own space.",
+        'Salt in the water, sass in the soul.',
+        "The tide's coming in, and so is my moment.",
+    ],
+};
+
+function writeCharacterLine(categoryKey, itemLabel, characterName, adjective) {
+    const mood = window.CharacterArt ? window.CharacterArt.moodFor(adjective) : 'happy';
+    const pool = [...(MOOD_LINES[mood] || MOOD_LINES.happy), ...(CATEGORY_LINES[categoryKey] || [])];
+    const line = pool[Math.floor(Math.random() * pool.length)];
+    return line.replace(/\{name\}/g, characterName).replace(/\{item\}/g, itemLabel.toLowerCase());
+}
 
 // ============================================================
 // 2. EXPANDED Category & Item Definitions
@@ -309,7 +426,23 @@ let lastCharacterName = '';
 let lastQuoteText = '';
 let lastJokeText = '';
 let lastLanguage = 'en-IE';
-let lastGender = 'male';
+let lastGender = 'kid';
+
+// Voice styles offered in the picker (radio name "voiceGender" kept for compatibility).
+// "base" picks which browser voice list to match before pitch/rate are applied.
+const VOICE_STYLES = {
+    kid: { label: 'Kid', base: 'female', pitch: 1.75, rate: 1.0 },
+    teen: { label: 'Teen', base: 'male', pitch: 1.3, rate: 0.98 },
+};
+
+function getVoiceStyle(key) {
+    return VOICE_STYLES[key] || VOICE_STYLES.kid;
+}
+
+function renderVoiceArt(key, size) {
+    if (!window.CharacterArt) return '';
+    return window.CharacterArt.render('voices', VOICE_STYLES[key] ? key : 'kid', { size });
+}
 
 // Male voice names to look for (common browser voice names)
 const maleVoiceNames = [
@@ -431,22 +564,16 @@ function speakCharacter(name, quote, joke, lang, gender) {
     const message = `${translation.intro} ${name}! ${cleanQuote} ${translation.alsoSaid} ${cleanJoke}`;
 
     const utterance = new SpeechSynthesisUtterance(message);
-    utterance.rate = 0.85;
-    
-    // Adjust pitch based on gender
-    if (gender === 'male') {
-        utterance.pitch = 0.9;
-        utterance.rate = 0.85;
-    } else {
-        utterance.pitch = 1.3;
-        utterance.rate = 0.9;
-    }
-    
+
+    // Kid / teen sound comes from pitch + rate on top of a base voice.
+    const style = getVoiceStyle(gender);
+    utterance.pitch = style.pitch;
+    utterance.rate = style.rate;
     utterance.volume = 1;
     utterance.lang = lang;
 
     // Find appropriate voice
-    const voice = getVoiceForLanguageAndGender(lang, gender);
+    const voice = getVoiceForLanguageAndGender(lang, style.base);
     if (voice) {
         utterance.voice = voice;
         console.log(`Using voice: ${voice.name} (${voice.lang})`);
@@ -516,14 +643,10 @@ function updateVoiceButtons(isPlaying, lang, gender) {
     if (playBtn) {
         playBtn.disabled = isPlaying;
         if (isPlaying) {
-            const genderEmoji = gender === 'male' ? '👨' : '👩';
-            const langLabel = lang ? languageSelect.options[languageSelect.selectedIndex]?.text || '' : '';
-            playBtn.innerHTML = `🔊 Speaking ${langLabel} ${genderEmoji}...`;
+            playBtn.innerHTML = `🔊 Speaking…`;
             playBtn.classList.add('playing');
         } else {
-            const genderEmoji = lastGender === 'male' ? '👨' : '👩';
-            const langLabel = lastLanguage ? languageSelect.options[languageSelect.selectedIndex]?.text || '' : '';
-            playBtn.innerHTML = `🔊 Play Voice (${langLabel})`;
+            playBtn.innerHTML = `🔊 Play again`;
             playBtn.classList.remove('playing');
         }
     }
@@ -532,9 +655,8 @@ function updateVoiceButtons(isPlaying, lang, gender) {
     }
     if (voiceStatus) {
         if (isPlaying) {
-            const genderEmoji = gender === 'male' ? '👨' : '👩';
-            voiceStatus.textContent = `🔊 Speaking in ${genderEmoji} voice...`;
-            voiceStatus.style.display = 'block';
+            voiceStatus.textContent = `🔊 ${getVoiceStyle(gender).label} voice speaking…`;
+            voiceStatus.style.display = 'inline-flex';
         } else {
             voiceStatus.style.display = 'none';
         }
@@ -725,7 +847,7 @@ function escapeHtmlAttr(str) {
 function getSelectedVoiceSettings() {
     const lang = languageSelect.value;
     const genderRadio = document.querySelector('input[name="voiceGender"]:checked');
-    const gender = genderRadio ? genderRadio.value : 'male';
+    const gender = genderRadio ? genderRadio.value : 'kid';
     return { lang, gender };
 }
 
@@ -784,10 +906,7 @@ async function generateDrama(categoryKey, itemKey) {
     `;
 
     try {
-        const [jokeResponse, quoteResponse] = await Promise.all([
-            fetchWithTimeout(jokeApiUrl, {}, 4000).catch(() => null),
-            fetchWithTimeout(quoteApiUrl, {}, 4000).catch(() => null),
-        ]);
+        const jokeResponse = await fetchWithTimeout(jokeApiUrl, {}, 4000).catch(() => null);
 
         let jokeText = `"I'm not ${itemLabel.toLowerCase()}, I'm a lifestyle choice."`;
         if (jokeResponse && jokeResponse.ok) {
@@ -795,21 +914,16 @@ async function generateDrama(categoryKey, itemKey) {
             if (jokeData.joke) jokeText = `"${jokeData.joke}"`;
         }
 
-        let quoteText = `"I'm ${itemLabel.toLowerCase()} and I'm fabulous!"`;
-        if (quoteResponse && quoteResponse.ok) {
-            const quoteData = await quoteResponse.json();
-            if (quoteData && quoteData.length > 0 && quoteData[0].Quote) {
-                quoteText = `"${quoteData[0].Quote}"`;
-            }
-        }
-
         const adjectives = [
-            'Grumpy', 'Dramatic', 'Judgmental', 'Overdramatic', 'Sassy', 
+            'Grumpy', 'Dramatic', 'Judgmental', 'Overdramatic', 'Sassy',
             'Furious', 'Moody', 'Chaotic', 'Silly', 'Wacky',
             'Sarcastic', 'Mysterious', 'Glamorous', 'Snarky', 'Quirky'
         ];
         const adjective = adjectives[Math.floor(Math.random() * adjectives.length)];
         const characterName = `${adjective} ${itemLabel}`;
+
+        // The headline line is original writing that matches the character's mood and category.
+        const quoteText = `"${writeCharacterLine(categoryKey, itemLabel, characterName, adjective)}"`;
         const characterArt = window.CharacterArt
             ? window.CharacterArt.render(categoryKey, itemKey, {
                 mood: window.CharacterArt.moodFor(adjective),
@@ -829,73 +943,52 @@ async function generateDrama(categoryKey, itemKey) {
 
         // Get language label for display
         const langLabel = languageSelect.options[languageSelect.selectedIndex]?.text || 'English';
-        const genderEmoji = lastGender === 'male' ? '👨' : '👩';
-        const genderLabel = lastGender === 'male' ? 'Male' : 'Female';
+        const voiceStyle = getVoiceStyle(lastGender);
+        const voiceBadgeArt = renderVoiceArt(lastGender, 'badge');
 
         resultContent.innerHTML = `
-            <div id="resultContent">
-                <div class="speech-bubble" id="speechBubble">
-                    💬 ${quoteText}
-                </div>
+            <div class="result-inner">
+                <div class="result-stage-wrap">
+                    <div class="cartoon-character-container">
+                        <div class="cartoon-character cv-host" id="cartoonCharacter">
+                            <div class="sound-waves">
+                                <div class="sound-wave"></div>
+                                <div class="sound-wave"></div>
+                                <div class="sound-wave"></div>
+                            </div>
 
-                <div class="cartoon-character-container">
-                    <div class="cartoon-character cv-host" id="cartoonCharacter">
-                        <div class="sound-waves">
-                            <div class="sound-wave"></div>
-                            <div class="sound-wave"></div>
-                            <div class="sound-wave"></div>
+                            <div class="cv-stage" style="--item-color: ${itemColor};">
+                                ${characterArt}
+                            </div>
+                            <span class="character-name-tag">${characterName}</span>
                         </div>
-
-                        <div class="cv-stage" style="--item-color: ${itemColor};">
-                            ${characterArt}
-                        </div>
-                        <span class="character-name-tag">${characterName}</span>
                     </div>
                 </div>
 
-                <div class="result-quote">${quoteText}</div>
+                <div class="result-quote" id="speechBubble">${quoteText}</div>
                 <div class="result-joke">💬 <em>also said:</em> ${jokeText}</div>
-                <span class="result-category-tag">${category.label} • ${itemLabel}</span>
 
-                <!-- Voice Settings Display -->
-                <div class="voice-settings-display">
+                <div class="result-meta">
+                    <span class="result-category-tag">${category.label} • ${itemLabel}</span>
                     <span class="voice-badge">🌐 ${langLabel}</span>
-                    <span class="voice-badge">${genderEmoji} ${genderLabel}</span>
-                    <span class="voice-badge" id="voiceStatus" style="display:none;">🔊 Speaking...</span>
+                    <span class="voice-badge voice-badge-art">${voiceBadgeArt} ${voiceStyle.label} voice</span>
+                    <span class="voice-badge" id="voiceStatus" style="display:none;">🔊 Speaking…</span>
                 </div>
 
-                <div class="voice-controls">
-                    <button class="voice-btn" id="playVoiceBtn" onclick="replayVoice()">
-                        🔊 Play Voice (${langLabel})
-                    </button>
-                    <button class="voice-btn" id="stopVoiceBtn" onclick="stopVoice()" disabled>
-                        ⏹️ Stop
-                    </button>
-                </div>
-
-                <!-- SHARE BUTTONS -->
-                <div class="share-buttons">
-                    <button data-share="twitter" data-name="${safeName}" data-quote="${safeQuote}" data-joke="${safeJoke}">
-                        🐦 Twitter
-                    </button>
-                    <button data-share="facebook" data-name="${safeName}" data-quote="${safeQuote}" data-joke="${safeJoke}">
-                        📘 Facebook
-                    </button>
-                    <button data-share="pinterest" data-name="${safeName}" data-quote="${safeQuote}" data-joke="${safeJoke}">
-                        📌 Pinterest
-                    </button>
-                    <button data-share="whatsapp" data-name="${safeName}" data-quote="${safeQuote}" data-joke="${safeJoke}">
-                        💬 WhatsApp
-                    </button>
-                    <button data-share="reddit" data-name="${safeName}" data-quote="${safeQuote}" data-joke="${safeJoke}">
-                        🤖 Reddit
-                    </button>
-                    <button data-share="linkedin" data-name="${safeName}" data-quote="${safeQuote}" data-joke="${safeJoke}">
-                        💼 LinkedIn
-                    </button>
-                    <button data-share="copy" data-name="${safeName}" data-quote="${safeQuote}" data-joke="${safeJoke}">
-                        📋 Copy
-                    </button>
+                <div class="result-actions">
+                    <div class="voice-controls">
+                        <button class="voice-btn" id="playVoiceBtn" onclick="replayVoice()">🔊 Play again</button>
+                        <button class="voice-btn" id="stopVoiceBtn" onclick="stopVoice()" disabled>⏹️ Stop</button>
+                    </div>
+                    <div class="share-buttons" role="group" aria-label="Share this character">
+                        <button class="share-icon" data-share="twitter" data-name="${safeName}" data-quote="${safeQuote}" data-joke="${safeJoke}" aria-label="Share on Twitter" title="Share on Twitter">🐦</button>
+                        <button class="share-icon" data-share="facebook" data-name="${safeName}" data-quote="${safeQuote}" data-joke="${safeJoke}" aria-label="Share on Facebook" title="Share on Facebook">📘</button>
+                        <button class="share-icon" data-share="pinterest" data-name="${safeName}" data-quote="${safeQuote}" data-joke="${safeJoke}" aria-label="Share on Pinterest" title="Share on Pinterest">📌</button>
+                        <button class="share-icon" data-share="whatsapp" data-name="${safeName}" data-quote="${safeQuote}" data-joke="${safeJoke}" aria-label="Share on WhatsApp" title="Share on WhatsApp">💬</button>
+                        <button class="share-icon" data-share="reddit" data-name="${safeName}" data-quote="${safeQuote}" data-joke="${safeJoke}" aria-label="Share on Reddit" title="Share on Reddit">🤖</button>
+                        <button class="share-icon" data-share="linkedin" data-name="${safeName}" data-quote="${safeQuote}" data-joke="${safeJoke}" aria-label="Share on LinkedIn" title="Share on LinkedIn">💼</button>
+                        <button class="share-copy" data-share="copy" data-name="${safeName}" data-quote="${safeQuote}" data-joke="${safeJoke}">📋 Copy</button>
+                    </div>
                 </div>
             </div>
         `;
@@ -971,7 +1064,7 @@ function shareTwitter(name, quote, joke) {
     let cleanName = name.replace(/&quot;/g, '"').replace(/&#39;/g, "'");
     
     const shareText = `🎭 Just met ${cleanName}! ${cleanQuote} Also said: ${cleanJoke} 🎭 Get your own cartoon character at Cartoon Character Fun!`;
-    const url = 'https://thedramaticplate.ie';
+    const url = SITE_URL;
     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(url)}`, '_blank', 'width=600,height=400');
 }
 
@@ -981,7 +1074,7 @@ function shareFacebook(name, quote, joke) {
     let cleanName = name.replace(/&quot;/g, '"').replace(/&#39;/g, "'");
     
     const shareText = `🎭 Just met ${cleanName}! ${cleanQuote} Also said: ${cleanJoke} 🎭 Get your own cartoon character at Cartoon Character Fun!`;
-    const url = 'https://thedramaticplate.ie';
+    const url = SITE_URL;
     window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(shareText)}`, '_blank', 'width=600,height=400');
 }
 
@@ -991,8 +1084,8 @@ function sharePinterest(name, quote, joke) {
     let cleanName = name.replace(/&quot;/g, '"').replace(/&#39;/g, "'");
     
     const description = `${cleanName} – ${cleanQuote} Also said: ${cleanJoke}`;
-    const url = 'https://thedramaticplate.ie';
-    const imageUrl = 'https://via.placeholder.com/800x600/FFDE21/1a1a1a?text=Dramatic+Plate';
+    const url = SITE_URL;
+    const imageUrl = `${SITE_URL}/og-image.png`;
     window.open(`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(url)}&media=${encodeURIComponent(imageUrl)}&description=${encodeURIComponent(description)}`, '_blank', 'width=600,height=400');
 }
 
@@ -1001,7 +1094,7 @@ function shareWhatsApp(name, quote, joke) {
     let cleanQuote = quote.replace(/^"|"$/g, '').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
     let cleanName = name.replace(/&quot;/g, '"').replace(/&#39;/g, "'");
     
-    const shareText = `🎭 Just met ${cleanName}! ${cleanQuote} Also said: ${cleanJoke} 🎭 Get your own cartoon character at Cartoon Character Fun! https://thedramaticplate.ie`;
+    const shareText = `🎭 Just met ${cleanName}! ${cleanQuote} Also said: ${cleanJoke} 🎭 Get your own cartoon character at Cartoon Character Fun! ${SITE_URL}`;
     window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`, '_blank', 'width=600,height=400');
 }
 
@@ -1012,7 +1105,7 @@ function shareReddit(name, quote, joke) {
     
     const title = `🎭 Just met ${cleanName}!`;
     const shareText = `${cleanQuote} Also said: ${cleanJoke}`;
-    const url = 'https://thedramaticplate.ie';
+    const url = SITE_URL;
     window.open(`https://www.reddit.com/submit?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title + ' ' + shareText)}`, '_blank', 'width=600,height=400');
 }
 
@@ -1022,7 +1115,7 @@ function shareLinkedIn(name, quote, joke) {
     let cleanName = name.replace(/&quot;/g, '"').replace(/&#39;/g, "'");
     
     const shareText = `🎭 Just met ${cleanName}! ${cleanQuote} Also said: ${cleanJoke}`;
-    const url = 'https://thedramaticplate.ie';
+    const url = SITE_URL;
     window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}&summary=${encodeURIComponent(shareText)}`, '_blank', 'width=600,height=400');
 }
 
@@ -1031,7 +1124,7 @@ function copyToClipboard(name, quote, joke) {
     let cleanQuote = quote.replace(/^"|"$/g, '').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
     let cleanName = name.replace(/&quot;/g, '"').replace(/&#39;/g, "'");
     
-    const text = `🎭 Just met ${cleanName}! ${cleanQuote} Also said: ${cleanJoke} 🎭 Get your own cartoon character at Cartoon Character Fun! https://thedramaticplate.ie`;
+    const text = `🎭 Just met ${cleanName}! ${cleanQuote} Also said: ${cleanJoke} 🎭 Get your own cartoon character at Cartoon Character Fun! ${SITE_URL}`;
     
     if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(text).then(() => {
@@ -1146,7 +1239,7 @@ window.addEventListener('load', function() {
             Pick a category &amp; item above<br />
             <span style="font-size: 0.9rem; opacity: 0.7;">💬 ${randomWelcome}</span>
             <span style="font-size: 0.8rem; opacity: 0.5; display: block; margin-top: 0.5rem;">
-                🌐 Select a language &amp; voice gender
+                🌐 Pick a language &amp; a kid or teen voice
             </span>
         `;
     }
@@ -1220,4 +1313,10 @@ window.generateFromPopular = function(name, category) {
 // Call on load
 window.addEventListener('load', function() {
     generatePopularCharacters();
+});
+// ============================================================
+// 17. Voice style cards (Kid / Teen) use the same illustrated characters
+// ============================================================
+document.querySelectorAll('.voice-style-art[data-voice-art]').forEach((slot) => {
+    slot.innerHTML = renderVoiceArt(slot.dataset.voiceArt, 'voice');
 });
